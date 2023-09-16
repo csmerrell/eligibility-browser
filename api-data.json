@@ -1,0 +1,452 @@
+[
+    {
+        "last_name": "Henry",
+        "first_name": "Jacob",
+        "date_of_birth": "1942-11-28",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2000-01-03",
+                "elig_start_date": "2000-01-07"
+            }
+        ],
+        "claims": []
+    },
+    {
+        "last_name": "Henry",
+        "first_name": "Mary",
+        "date_of_birth": "1944-06-06",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2000-01-03",
+                "elig_start_date": "2000-01-07"
+            }
+        ],
+        "claims": [
+            {
+                "type": "vision",
+                "claim_id": "0000717X",
+                "provider": "Dr. Roger Sauron, MD, Ophthalmology",
+                "description": "eye exam",
+                "claim_amount": "$115.00",
+                "claim_date": "2021-12-27"
+            },
+            {
+                "type": "vision",
+                "claim_id": "5152X3B44",
+                "provider": "EyeWerks of Mordor",
+                "description": "eyeglasses",
+                "claim_amount": "$200.00",
+                "claim_date": "2021-12-27"
+            },
+            {
+                "type": "medical",
+                "claim_id": "001101ea-7671-0001-1423-a1ff73230cdc",
+                "provider": "Eva Shelob, MD",
+                "description": "muscular-skeletal: pain in finger",
+                "claim_amount": "$25.00",
+                "claim_date": "2022-12-20"
+            }
+        ]
+    },
+    {
+        "last_name": "Santa",
+        "first_name": "Julie",
+        "date_of_birth": "1990-01-13",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2021-01-05",
+                "elig_start_date": "2021-01-08",
+                "termed_date": "2021-03-30",
+                "elig_term_date": "2021-04-02"
+            },
+            {
+                "type": "employee",
+                "start_date": "2021-12-29",
+                "elig_start_date": "2021-12-31"
+            }
+        ],
+        "claims": [
+            {
+                "type": "medical",
+                "claim_id": "d75b8076-262e-4803-a78e-6600ea199574",
+                "provider": "Frankie Frodo, ND",
+                "description": "annual checkup",
+                "claim_amount": "$72.16",
+                "claim_date": "2021-04-01"
+            }
+        ]
+    },
+    {
+        "last_name": "Klaus",
+        "first_name": "Cindy",
+        "date_of_birth": "1988-02-28",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2020-02-28",
+                "elig_start_date": "2020-02-28",
+                "termed_date": "2021-12-25",
+                "elig_term_date": "2021-12-31"
+            }
+        ],
+        "claims": [
+            {
+                "type": "medical",
+                "claim_id": "b79aba95-39e1-4110-958d-c9bc03df6aa3",
+                "provider": "The Shire Medical Group",
+                "description": "hepatitis-A vaccination",
+                "claim_amount": "$25.00",
+                "claim_date": "2020-12-23"
+            },
+            {
+                "type": "medical",
+                "claim_id": "e6e1a190-93dc-4756-9ce4-25896cc93cd1",
+                "provider": "The Shire Medical Group",
+                "description": "hepatitis-A vaccination booster",
+                "claim_amount": "$25.00",
+                "claim_date": "2021-12-27"
+            }
+        ]
+    },
+    {
+        "last_name": "Henry",
+        "first_name": "Mary",
+        "date_of_birth": "1991-09-16",
+        "eligibility_history": [
+            {
+                "type": "dependent",
+                "elig_start_date": "2006-03-17",
+                "elig_term_date": "2009-09-24"
+            },
+            {
+                "type": "employee",
+                "start_date": "2009-09-22",
+                "elig_start_date": "2009-09-25"
+            }
+        ],
+        "claims": [
+            {
+                "type": "dental",
+                "claim_id": "f2fd4c81-16dc-427f-97ff-a863454447aa",
+                "provider": "Dr. Greg Gorgoroth, DDS",
+                "description": "Invisalign initial assessment",
+                "claim_amount": "$750.00",
+                "claim_date": "2006-09-03"
+            },
+            {
+                "type": "dental",
+                "claim_id": "a0270708-2850-4efd-9aea-c0d6a7f0a670",
+                "provider": "Dr. Greg Gorgoroth, DDS",
+                "description": "Invisalign follow-up adjustment",
+                "claim_amount": "$150.00",
+                "claim_date": "2006-10-31"
+            },
+            {
+                "type": "medical",
+                "claim_id": "15b1f3c6-be93-4353-ba7a-c718231d07ae",
+                "provider": "Dr. Iris Isengard",
+                "description": "Travel vaccination",
+                "claim_amount": "$50.00",
+                "claim_date": "2006-11-11"
+            },
+            {
+                "type": "dental",
+                "claim_id": "9091836e-ab3c-4931-b461-93217837f14b",
+                "provider": "Dr. Greg Gorgoroth, DDS",
+                "description": "Invisalign follow-up adjustment",
+                "claim_amount": "$150.00",
+                "claim_date": "2006-11-30"
+            },
+            {
+                "type": "dental",
+                "claim_id": "2821999c-afff-44c2-8343-834c9e918091",
+                "provider": "Dr. Greg Gorgoroth, DDS",
+                "description": "Invisalign repair",
+                "claim_amount": "$189.94",
+                "claim_date": "2009-09-30"
+            },
+            {
+                "type": "medical",
+                "claim_id": "48d1cd82-41b6-46c7-821d-fcc6d1a87904",
+                "provider": "Dr. Iris Isengard",
+                "description": "Travel vaccination",
+                "claim_amount": "$50.00",
+                "claim_date": "2009-09-30"
+            },
+            {
+                "type": "medical",
+                "claim_id": "ff664784-2fe2-427b-8063-0c293a958cda",
+                "provider": "Dr. Paul Pellenor",
+                "description": "Back pain assessment",
+                "claim_amount": "$200.07",
+                "claim_date": "2010-01-06"
+            }
+        ]
+    },
+    {
+        "last_name": "Adams",
+        "first_name": "Adam",
+        "date_of_birth": "1975-07-05",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2021-01-01",
+                "elig_start_date": "2021-01-01",
+                "termed_date": "2021-12-31",
+                "elig_term_date": "2021-12-31"
+            },
+            {
+                "type": "retiree",
+                "elig_start_date": "2022-01-01"
+            }
+        ],
+        "claims": [
+            {
+                "type": "medical",
+                "claim_id": "7f395cad-19e2-46b3-8378-7c4705b976a0",
+                "provider": "Bill Pony, RN",
+                "description": "refill checkup",
+                "claim_amount": "$30.00",
+                "claim_date": "2021-09-21"
+            },
+            {
+                "type": "medical",
+                "claim_id": "7f136086-f5e6-4f08-8af6-9ec3b8176056",
+                "provider": "Bill Pony, RN",
+                "description": "refill checkup",
+                "claim_amount": "$30.00",
+                "claim_date": "2021-10-02"
+            },
+            {
+                "type": "medical",
+                "claim_id": "7771c722-09c9-4d1f-bed5-938cc255f33a",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-11-17"
+            },
+            {
+                "type": "medical",
+                "claim_id": "8ca268c4-9334-49dc-a67f-0ff202653f8f",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-11-24"
+            },
+            {
+                "type": "medical",
+                "claim_id": "e876fcc6-1734-410e-ae4b-1ed7661d6401",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-12-01"
+            },
+            {
+                "type": "medical",
+                "claim_id": "500e23b0-4624-4bb8-9a8b-cc4256a3594f",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-12-15"
+            },
+            {
+                "type": "medical",
+                "claim_id": "142dfd50-fb86-4cca-b8de-ebc3bcbd3e9f",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2022-01-14"
+            },
+            {
+                "type": "medical",
+                "claim_id": "3b963aa9-7f10-4773-acfa-c569ca68c42e",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$135.00",
+                "claim_date": "2022-02-15"
+            },
+            {
+                "type": "medical",
+                "claim_id": "c51299cd-9eba-426e-8b9f-94dc7b74e83a",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2022-03-25"
+            },
+            {
+                "type": "medical",
+                "claim_id": "2d629c78-ac4b-49a1-8b65-a15faec49e70",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2022-05-02"
+            },
+            {
+                "type": "medical",
+                "claim_id": "8439b30c-c91e-47b9-aabb-a35c79d2b3d6",
+                "provider": "Bill Pony, RN",
+                "description": "refill checkup",
+                "claim_amount": "$30.00",
+                "claim_date": "2022-08-02"
+            },
+            {
+                "type": "medical",
+                "claim_id": "b6e31bbe-a18e-4c21-a01a-27ec5e8484b0",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2022-09-03"
+            },
+            {
+                "type": "medical",
+                "claim_id": "0743010c-d024-4e5f-9754-2af2975f2384",
+                "provider": "Bill Pony, RN",
+                "description": "refill checkup",
+                "claim_amount": "$30.00",
+                "claim_date": "2022-12-02"
+            }
+        ]
+    },
+    {
+        "last_name": "Blue",
+        "first_name": "Violet",
+        "date_of_birth": "1979",
+        "eligibility_history": [
+            {
+                "type": "employee",
+                "start_date": "2020-01-01",
+                "elig_start_date": "2020-01-01",
+                "termed_date": "2020-12-31",
+                "elig_term_date": "2021-01-31"
+            },
+            {
+                "type": "retiree",
+                "elig_start_date": "2021-02-01",
+                "elig_term_date": "2021-12-31"
+            }
+        ],
+        "claims": [
+            {
+                "type": "medical",
+                "claim_id": "42b271a8-c858-4d87-8e62-503c2191d2b2",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-02-01"
+            },
+            {
+                "type": "medical",
+                "claim_id": "f67c109c-a2c9-40dc-a3ba-885b0bf5df50",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-03-01"
+            },
+            {
+                "type": "medical",
+                "claim_id": "4a0840fb-b065-459b-92bc-acd1bdc585d5",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-04-04"
+            },
+            {
+                "type": "medical",
+                "claim_id": "940aee1f-ce9e-4d75-9e70-ff7734e74dff",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-05-03"
+            },
+            {
+                "type": "medical",
+                "claim_id": "9d0724b0-6e38-4edd-8bff-49c6d0e63622",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-06-02"
+            },
+            {
+                "type": "medical",
+                "claim_id": "dcffda41-db51-4b9b-9c4c-9e9b31cbffbe",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-07-01"
+            },
+            {
+                "type": "medical",
+                "claim_id": "266d2d21-9451-4742-86cb-55ab18bb3d55",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-08-08"
+            },
+            {
+                "type": "medical",
+                "claim_id": "5daee396-330c-435e-babf-b093bb023c8b",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-09-07"
+            },
+            {
+                "type": "medical",
+                "claim_id": "f19998de-b989-4d2d-9ba1-c7eadaca7067",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-10-06"
+            },
+            {
+                "type": "medical",
+                "claim_id": "b2bce0c7-f0e7-48c6-83f3-c042779dabfd",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-11-05"
+            },
+            {
+                "type": "medical",
+                "claim_id": "e4eb2901-fd00-48b5-a877-104ad24a2e17",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-12-04"
+            },
+            {
+                "type": "medical",
+                "claim_id": "3347705c-fda8-4267-8b40-480ceaeab1c8",
+                "provider": "Sarah Shadowfax",
+                "description": "physical therapy",
+                "claim_amount": "$75.00",
+                "claim_date": "2021-12-31"
+            }
+        ]
+    },
+    {
+        "last_name": "Klaus",
+        "first_name": "Cindy Jr.",
+        "date_of_birth": "2020-02-28",
+        "eligibility_history": [
+            {
+                "type": "dependent",
+                "elig_start_date": "2020-02-28",
+                "elig_end_date": "2021-12-31"
+            }
+        ],
+        "claims": [
+            {
+                "type": "rx",
+                "claim_id": "f2afa8bb-895e-49b7-b1eb-874adb1a7129",
+                "provider": "Harold Hasufel, Pharmacist",
+                "description": "prescription laxative",
+                "claim_amount": "$10.49",
+                "claim_date": "2020-02-28"
+            }
+        ]
+    }
+]
