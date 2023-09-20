@@ -1,0 +1,12 @@
+@import "./scss/colors.scss";
+@import "./scss/font.scss";
+@import "./scss/layout.scss";
+
+body {
+  background-color: var(--clr-bg);
+  
+  * {
+    box-sizing: border-box;
+    border-color: var(--clr-border);
+  }
+}

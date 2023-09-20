@@ -435,7 +435,7 @@
             {
                 "type": "dependent",
                 "elig_start_date": "2020-02-28",
-                "elig_end_date": "2021-12-31"
+                "elig_term_date": "2021-12-31"
             }
         ],
         "claims": [

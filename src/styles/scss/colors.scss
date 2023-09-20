@@ -1,0 +1,38 @@
+//applet colors
+
+:root {
+  //blacks
+  --clr-black: #000;
+  --clr-black-light-10: #111;
+  --clr-black-light-20: #222;
+
+  //whites
+  --clr-white: #fff;
+  --clr-off-white: #fafafa;
+  --clr-off-white-dark-5: #f6f6f6;
+  --clr-off-white-dark-10: #f0f0f0;
+
+  //grays
+  --clr-dark-gray: #333;
+  --clr-dark-gray-light-10: #444;
+  --clr-mid-gray: #666;
+  --clr-light-gray: #999;
+  --clr-pale-gray: #ccc;
+
+  //purples
+  --clr-dark-purple: #4d2277;
+  --clr-light-purple: #e6d7f4;
+  --clr-light-purple-dark-5: #cdafe9;
+  --clr-light-purple-dark-10: #b487de;
+
+  //derived
+  --clr-font: var(--clr-black-light-10);
+  --clr-secondary: var(--clr-mid-gray);
+  --clr-primary: var(--clr-dark-purple);
+  --clr-font-inverse: var(--clr-white);
+  --clr-bg: var(--clr-white);
+  --clr-bg-off: var(--clr-off-white);
+  --clr-bg-off-pop-5: var(--clr-off-white-dark-5);
+  --clr-bg-off-pop-10: var(--clr-off-white-dark-10);
+  --clr-border: var(--clr-pale-gray);
+}
