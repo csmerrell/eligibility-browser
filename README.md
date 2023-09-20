@@ -9,6 +9,8 @@ A demo applet that matches mock employees, retirees, and their dependents to an 
 * Vue router
 * Node 20 & npm
 
+**Link:** My notes on [Scaling](#notes-on-scaling) an app like this for larger, more complex data pulls. 
+
 ## Usage / Getting Started
 Requirements:
 
@@ -100,3 +102,39 @@ It:
 - Eliminates the need to carry header or side-panel positioning offsets anywhere else in your code. 
 - Encapsulates HUD animations and exposes hooks to control expand/collapse states.
 - (Still a WIP in this vue3 version) is easy to convert into mobile-first or responsive designs.
+
+## Notes on Scaling
+Several things would need attention to scale this up:
+
+### # of Claims
+To handle more claims, the main strategies would be:
+1. Bundle claims quarterly and/or annually into a single entry on the timeline.
+  * The graph could be adapted to enable drilling down into annual, quarterly, monthly claim histories.
+  * Alternatively, annual claims could be restricted to a separate view that is opened on clicking the bundled claim entry in the `claims` panel.
+2. Reduce the amount of up-front data parsing/shaping that happens on page load.
+  * Right now, it parses everything before it renders anything. This would have to go immediately to scale it up.
+  * If each claimant has 100s or more claims, then parsing needs to happen asynchronously with lazy loading strategy.
+3. Add claim filtering:
+  * Set some default filters. Let users have more granular control over them.
+4. Add an aggregate claim view that bundles claims with similar scopes 
+  * (same provider, same description, similar cost range, etc).
+5. Tighten up the canvas file's performance.
+  * Framerate demands can be improved by letting Vue control animation frames.  
+6. Test for overhead on vue observables.
+  * This is a huge concern in modern web frameworks. Data mutations trigger extra life-cycle/render events. 
+  * It probably isn't a likely performance hit on this particular graph, because most data is generated once and the only mutations changing are animations.
+7. Tighten up parsing algorithms.
+  * I already tightened them up, so they're not the biggest performance hindrance. Everything is generally O(n), so driving down the size of `n` will yield more results. This would be a distant concern after all the above concerns.
+
+
+### # of Employees, Dependents, Retirees
+1. Reduce the default list to just active employees.
+  * Add filters to allow termed employees.
+  * Add dependents as sub-components of employees that don't get parsed until the main employee is clicked.
+  * Add tabs for Dependant/Retiree views that show dependants/retirees as the top level entries of the list.
+    * DON'T add filters that pull dependants/retirees into the top-level employee list. Keep them in a separate tab/context.
+  * **NOTE** Lots of this reduction should happen at the API level, whether by GraphQL or by rewriting REST endpoints.
+2. Lazy load employees.
+  * You can add paging, or just load them asynchronously after the first visible employees are renderable.
+3. Reduce the amount of data parsing going into each employee. (See #2 in `claims` notes)
+4. Mostly similar stategies as optimizing claims.
