@@ -1,10 +1,10 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 //components
-import ClaimantItem from './Claimant.vue';
+import ClaimantItem from './Claimant.vue'
 
 //model
-import { Claimant } from '@/views/eligibility/model/Claimant';
-import PanelHeader from '../PanelHeader.vue';
+import { Claimant } from '@/views/eligibility/model/Claimant'
+import PanelHeader from '../PanelHeader.vue'
 
 const props = defineProps<{
   claimants: Claimant[]
@@ -24,7 +24,7 @@ const uniqueKey = (c: Claimant) => {
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .claimant-list {
   display: flex;
   flex-flow: column;

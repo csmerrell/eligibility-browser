@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<FlexHudProps>(), {
 
 const rightPaneRef = ref<typeof RightPane | null>(null)
 const leftPaneRef = ref<typeof LeftPane | null>(null)
-const el = ref<HTMLDivElement | null>(null);
+const el = ref<HTMLDivElement | null>(null)
 
 const toggleLeftPane = () => {
   leftPaneRef.value?.toggle()
@@ -35,7 +35,7 @@ const toggleRightPane = () => {
 }
 
 const setRightPaneVisibility = (val: boolean) => {
-  if(rightPaneRef.value) {
+  if (rightPaneRef.value) {
     rightPaneRef.value.expanded = val
 
     if (props.singleSidePane && leftPaneRef.value?.expanded) {
@@ -132,7 +132,7 @@ body {
     bottom: 0;
     display: flex;
     flex-flow: row;
-    
+
     #main-panel {
       flex-grow: 1;
       flex-basis: calc(100% - var(--fh-left-pane-width) - var(--fh-right-pane-width));
@@ -145,4 +145,3 @@ body {
   }
 }
 </style>
-

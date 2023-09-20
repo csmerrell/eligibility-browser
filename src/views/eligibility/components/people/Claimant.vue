@@ -1,10 +1,10 @@
-<script setup lang='ts'>
-import { computed } from 'vue';
-import { Claimant, type ClaimantProps } from '@/views/eligibility/model/Claimant';
-import { useEligibilityStore } from "@/stores/eligibility";
-const store = useEligibilityStore();
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
+import { useEligibilityStore } from '@/stores/eligibility'
+const store = useEligibilityStore()
 
-const props = defineProps<ClaimantProps>();
+const props = defineProps<ClaimantProps>()
 const fullName = computed(() => {
   return `${props.last_name}, ${props.first_name}`
 })
@@ -15,14 +15,18 @@ const isSelected = computed(() => {
 </script>
 
 <template>
-  <div class='claimant' :class="{selected: isSelected}" @click="store.timelineAnimating ? null : store.setSelectedClaimant(props)">
+  <div
+    class="claimant"
+    :class="{ selected: isSelected }"
+    @click="store.timelineAnimating ? null : store.setSelectedClaimant(props)"
+  >
     <span class="name">{{ fullName }}</span>
     <span class="status">({{ props.status }})</span>
     <span v-if="isSelected" class="indicator">▶</span>
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .claimant {
   padding: 1rem;
   border-bottom: 1px solid var(--clr-border);
@@ -33,8 +37,8 @@ const isSelected = computed(() => {
   justify-content: flex-start;
 
   .status {
-    padding-left: .5em;
-    font-size: .9em;
+    padding-left: 0.5em;
+    font-size: 0.9em;
     color: var(--clr-secondary);
     font-style: italic;
     flex-grow: 1;
@@ -44,9 +48,8 @@ const isSelected = computed(() => {
     justify-self: flex-end;
   }
 
-  
   &:hover {
-    background-color: var(--clr-pale-gray)
+    background-color: var(--clr-pale-gray);
   }
 
   &.selected {

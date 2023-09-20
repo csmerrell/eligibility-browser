@@ -1,26 +1,24 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 //store
-import { useEligibilityStore } from '@/stores/eligibility';
+import { useEligibilityStore } from '@/stores/eligibility'
 
 //components
-import Timeline from './Timeline.vue';
-import Events from './Events.vue';
-import PanelHeader from '../PanelHeader.vue';
-import { BoxRebaser, WidthRebaser } from 'coordinate-rebaser';
+import Timeline from './Timeline.vue'
+import Events from './Events.vue'
+import PanelHeader from '../PanelHeader.vue'
 
-const store = useEligibilityStore();
-
+const store = useEligibilityStore()
 </script>
 
 <template>
-  <div v-if="store.selectedClaimant" class='claimant-history'>
+  <div v-if="store.selectedClaimant" class="claimant-history">
     <PanelHeader>History</PanelHeader>
     <Timeline v-bind="store.selectedClaimant" class="timeline" />
     <Events />
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .claimant-history {
   height: 100%;
   display: flex;

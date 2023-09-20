@@ -1,18 +1,22 @@
-<script setup lang='ts'>
-import { useEligibilityStore } from '@/stores/eligibility';
+<script setup lang="ts">
+import { useEligibilityStore } from '@/stores/eligibility'
 
-import Event from './Event.vue';
+import Event from './Event.vue'
 
-const store = useEligibilityStore();
+const store = useEligibilityStore()
 </script>
 
 <template>
-  <div class='events'>
-    <Event v-for="(event,idx) in store.renderedEvents" :key="`${idx}-${event.desc}`" v-bind="event"/>
+  <div class="events">
+    <Event
+      v-for="(event, idx) in store.renderedEvents"
+      :key="`${idx}-${event.desc}`"
+      v-bind="event"
+    />
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .events {
   position: absolute;
   top: 0;

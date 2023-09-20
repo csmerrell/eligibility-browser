@@ -4,17 +4,17 @@
  */
 import { ref, watch } from 'vue'
 import FlexHud from '@/components/flexHud/FlexHud.vue'
-import Header from '@/components/localHud/Header.vue';
+import Header from '@/components/localHud/Header.vue'
 import type { FlexHudProps } from './components/flexHud/model/FlexHud'
-import { RouterView } from "vue-router";
+import { RouterView } from 'vue-router'
 
-import { useEligibilityStore } from './stores/eligibility';
-const store = useEligibilityStore();
+import { useEligibilityStore } from './stores/eligibility'
+const store = useEligibilityStore()
 
 const hud = ref<typeof FlexHud | null>(null)
 
 watch(hud, () => {
-  if(hud.value) {
+  if (hud.value) {
     store.setRightPaneVisiblity = hud.value.setRightPaneVisibility
   }
 })
@@ -43,28 +43,26 @@ const config: FlexHudProps = {
       <Header />
     </template>
     <template #left-pane>
-      <div id="main-left-pane" />  
+      <div id="main-left-pane" />
     </template>
     <template #main-pane>
       <RouterView />
     </template>
     <template #right-pane>
-      <div id="main-right-pane" />  
+      <div id="main-right-pane" />
     </template>
   </FlexHud>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
 
 <style lang="scss">
-@import "./styles/index.scss";
+@import './styles/index.scss';
 
 .app {
-
   .main-header,
   .left-pane {
-    background-color:var(--clr-bg-off);
+    background-color: var(--clr-bg-off);
   }
 
   #main-panel {

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import type { ClaimantProps } from '@/views/eligibility/model/Claimant';
-import type { RenderedEvent, RenderedClaim } from '@/views/eligibility/model/Event';
+import { defineStore } from 'pinia'
+import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
+import type { RenderedEvent, RenderedClaim } from '@/views/eligibility/model/Event'
 
 // Use the `defineStore` method to define a new store
 export const useEligibilityStore = defineStore({
@@ -12,19 +12,21 @@ export const useEligibilityStore = defineStore({
     renderedEvents: [] as RenderedEvent[],
     selectedClaimant: null as ClaimantProps | null,
     timelineAnimating: false,
-    setRightPaneVisiblity: (val: boolean) => {}
+    setRightPaneVisiblity: (() => {}) as (val: boolean) => void
   }),
 
   // getters
   getters: {
     numClaims(): number {
-      return this.selectedClaimant?.timelineEvents.filter(event => event.type === "claim").length ?? 0
+      return (
+        this.selectedClaimant?.timelineEvents.filter((event) => event.type === 'claim').length ?? 0
+      )
     },
     hasClaims(): boolean {
       return this.numClaims > 0
     },
     renderedClaims(): RenderedClaim[] {
-      return this.renderedEvents.filter(event => event.type === "claim") as RenderedClaim[]
+      return this.renderedEvents.filter((event) => event.type === 'claim') as RenderedClaim[]
     }
   },
 
@@ -41,7 +43,6 @@ export const useEligibilityStore = defineStore({
     },
     setTimelineAnimating(val: boolean) {
       this.timelineAnimating = val
-    },
-  },
-});
-
+    }
+  }
+})

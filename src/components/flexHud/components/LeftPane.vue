@@ -45,7 +45,9 @@ onMounted(() => {
 .left-pane {
   --fh-width-transition: 0.5s;
   position: relative;
-  transition: width var(--fh-width-transition) ease-out, flex-basis var(--fh-width-transition) ease-out;
+  transition:
+    width var(--fh-width-transition) ease-out,
+    flex-basis var(--fh-width-transition) ease-out;
 
   .pane-contents {
     white-space: nowrap;
@@ -62,8 +64,8 @@ onMounted(() => {
   }
 
   &.expanded {
-      flex-basis: var(--fh-left-pane-width);
-      width: var(--fh-left-pane-width);
+    flex-basis: var(--fh-left-pane-width);
+    width: var(--fh-left-pane-width);
   }
 
   &.expanded,
