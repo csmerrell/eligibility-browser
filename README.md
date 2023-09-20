@@ -89,7 +89,7 @@ The historical strength of d3 is that it exposes hooks to the developer that upd
 - d3 => Plug data into d3 tools => d3 emits events => vue listens to those events to update its data state.
 - vue => makes its own data state mutations => maps those to canvas animation frames.
 
-TL;DR - Long term, if we're doing tons of highly customized graphs, training up team members in d3 is definitely a priority. For one-off graphs, it's a heavy import with a big learning curve that, depnding on the graph, may not actually simplify anything.
+TL;DR - Long term, if we're doing tons of highly customized graphs, training up team members in d3 is definitely a priority. For one-off graphs, it's a heavy import with a big learning curve that, depending on the graph, may not actually simplify anything.
 
 ### FlexHud
 The [FlexHud](src/components/flexHud/FlexHud.vue) component is something I designed myself a couple years ago. I originally wrote it in vue 2 at work. I had a half-implemented vue 3 version of it that I tried to rapidly finish while working on this. It's still got some issues, but for this scope it works. 
