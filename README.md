@@ -16,13 +16,15 @@ Install Node 20.x if you don't have it:
 ```bash
 nvm install 20
 ``` 
-To install nvm if you don't have it (From [nvm source](https://github.com/nvm-sh/nvm)): 
+
+(To install nvm if you don't have it) - From [nvm source](https://github.com/nvm-sh/nvm): 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 ```
 
-The rest of the package dependencies: (cd into the app's root directory)
+Install the rest of the package dependencies:
 ```bash
+cd /path/to/app/directory
 npm install
 ```
 
@@ -31,8 +33,14 @@ Run the dev server
 npm run dev
 ```
 
+### Recommended vscode extensions for navigating the code:
+- Vue Language Features (Volar)
+- Typescript Vue Pluging (Volar)
+
+**Note** You might want to disable `Vetur` (vue 2) if you have it installed.
+
 ## Code Highlights
-Here are some simple run-downs of the significant portions of the code.
+Here are some simple run-downs of the most significant portions of the code.
 
 Most of it is in the [src/views/eligibility](src/views/eligibility) directory.
 
@@ -52,15 +60,18 @@ The Claimant class uses several other types and classes within the same `model` 
 
 **Note:** For readability, I wanted to use javascript array methods (e.g. - `reduce`, `map`, `filter`), but `Array.forEach` allowed me to do similar data reduction in `O(n)` compared to more readable algorithms that would run up to `O(3n)`. At small data sets, readability > performance, but this data can get big.
 
+### Typescript
+Everything is typed. Lots of it uses hooks that are new in vue 3 to leverage automatic type inference
+
 ### Component Tree
 The component tree is broken into 3 main panels:
 - [People](src/views/eligibility/components/people/)
 - [History](src/views/eligibility/components/history/)
 - [Claims](src/views/eligibility/components/claims/)
 
-The root [EligibilityDashboard.vue](src/views/eligibility/EligibilityDashboard.vue) component uses vue3's built-in `teleport` component to send the left and right panels into lower-level panels controlled by a separate component called [FlexHud](src/components/flexHud/FlexHud.vue), which exposes hooks to control collapse/expand events for each panel.
+The root [EligibilityDashboard.vue](src/views/eligibility/EligibilityDashboard.vue) component uses vue3's built-in `teleport` component to send the left and right panels into lower-level panels controlled by a separate component called [FlexHud](#flexhud), which exposes hooks to control collapse/expand events for each panel.
 
-[People](src/views/eligibility/components/people/), [History](src/views/eligibility/components/history/), and [Claims](src/views/eligibility/components/claims/) are pretty straightforward single page application component trees, with some exceptions.
+[People](src/views/eligibility/components/people/), [History](src/views/eligibility/components/history/), and [Claims](src/views/eligibility/components/claims/) are pretty straightforward single page application component trees.
 
 You'll see lots of components create a `store` object using an imported `useEligibilityStore` method. This method returns a singleton state management object, which lets components in different parts of the component tree communicate without having to ferry data up and down the tree.
 
