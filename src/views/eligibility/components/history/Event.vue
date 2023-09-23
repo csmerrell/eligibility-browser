@@ -9,30 +9,35 @@ import { formatDate } from '@/util/dates/formatDate'
 import type { RenderedEvent } from '@/views/eligibility/model/Event'
 
 const props = defineProps<RenderedEvent>()
+const { desc, date, type, position, length } = props
 const el = ref<HTMLDivElement | null>(null)
 const lineEl = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   setTimeout(() => {
+    console.log()
     if (!el.value || !lineEl.value) return
-    el.value.style.setProperty('top', `${props.position.y}px`)
-    el.value.style.setProperty('left', `${props.position.x}px`)
+    el.value.style.setProperty('top', `${position.y}px`)
+    el.value.style.setProperty('left', `${position.x}px`)
     el.value.style.setProperty('opacity', '1')
-    lineEl.value.style.setProperty('width', props.length)
+    lineEl.value.style.setProperty('width', length)
+    emit('visibleStylesSet')
   }, 100)
 })
 
 const isClaim = computed(() => {
-  return props.type === 'claim'
+  return type === 'claim'
 })
+
+const emit = defineEmits(['visibleStylesSet'])
 </script>
 
 <template>
   <div ref="el" class="event" :class="{ claim: isClaim }">
     <div class="event-contents">
       <div ref="lineEl" class="line"></div>
-      <div class="description" v-if="!isClaim">{{ props.desc }}</div>
-      <div class="date" v-if="!isClaim">{{ formatDate(props.date) }}</div>
+      <div class="description" v-if="!isClaim">{{ desc }}</div>
+      <div class="date" v-if="!isClaim">{{ formatDate(date) }}</div>
     </div>
   </div>
 </template>

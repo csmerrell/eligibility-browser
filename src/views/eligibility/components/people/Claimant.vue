@@ -2,16 +2,13 @@
 import { computed } from 'vue'
 import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
 import { useEligibilityStore } from '@/stores/eligibility'
+
 const store = useEligibilityStore()
-
 const props = defineProps<ClaimantProps>()
-const fullName = computed(() => {
-  return `${props.last_name}, ${props.first_name}`
-})
+const { last_name, first_name, uniqueId, status } = props
 
-const isSelected = computed(() => {
-  return props.uniqueId === store.selectedClaimant?.uniqueId
-})
+const fullName = computed(() => `${last_name}, ${first_name}`)
+const isSelected = computed(() => uniqueId === store.selectedClaimant?.uniqueId)
 </script>
 
 <template>
@@ -21,7 +18,7 @@ const isSelected = computed(() => {
     @click="store.timelineAnimating ? null : store.setSelectedClaimant(props)"
   >
     <span class="name">{{ fullName }}</span>
-    <span class="status">({{ props.status }})</span>
+    <span class="status">({{ status }})</span>
     <span v-if="isSelected" class="indicator">▶</span>
   </div>
 </template>

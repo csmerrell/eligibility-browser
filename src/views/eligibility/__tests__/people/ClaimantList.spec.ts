@@ -1,7 +1,11 @@
+//test libs
 import { describe, it, expect } from 'vitest'
-
 import { shallowMount } from '@vue/test-utils'
+
+//component
 import ClaimantList from '@/views/eligibility/components/people/ClaimantList.vue'
+
+//mock data
 import mockData from '@/../public/api-data.json'
 import { Claimant, type RawClaimant } from '../../model/Claimant'
 
