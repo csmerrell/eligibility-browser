@@ -18,7 +18,12 @@ const uniqueKey = (c: Claimant) => {
 <template>
   <div class="claimant-list">
     <PanelHeader>People</PanelHeader>
-    <div v-for="claimant in props.claimants" :key="uniqueKey(claimant)">
+    <div
+      v-for="claimant in props.claimants"
+      :key="uniqueKey(claimant)"
+      :id="`claimant-${uniqueKey(claimant)}`"
+      class="claimant-wrapper"
+    >
       <ClaimantItem v-bind="claimant" />
     </div>
   </div>
