@@ -1,6 +1,6 @@
 //test libs
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, shallowMount } from '@vue/test-utils'
+import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import { global } from '../setup'
 
 //component
@@ -9,31 +9,9 @@ import Event from '@/views/eligibility/components/history/Event.vue'
 //util
 import { formatDate } from '@/util/dates/formatDate'
 
-//mock data
-const defaultEvent = {
-  date: new Date(),
-  desc: 'Default desc',
-  type: 'eligibility',
-  length: '100px',
-  position: { x: 50, y: 100 }
-}
-const mockEvents = {
-  default: defaultEvent,
-  edge: {
-    date: new Date(0),
-    desc: 'Edge desc',
-    type: 'eligibility',
-    length: null,
-    position: { x: 0, y: -10 }
-  },
-  claim: {
-    ...defaultEvent,
-    type: 'claim',
-    claim: {}
-  }
-}
+import mockEvents from '../mock/events'
 
-const positionCheckRecursive = (
+const positionCheckAsync = (
   wrapper: VueWrapper<InstanceType<typeof Event>>,
   x: string,
   y: string,
@@ -77,7 +55,7 @@ describe('Event', () => {
 
   it('renders with absolute coordinates', () => {
     const wrapper = shallowMount(Event, { global, props: mockEvents.default })
-    return positionCheckRecursive(
+    return positionCheckAsync(
       wrapper,
       `${mockEvents.default.position.x}px`,
       `${mockEvents.default.position.y}px`,
@@ -87,7 +65,7 @@ describe('Event', () => {
 
   it('renders edge case coordinates', () => {
     const wrapper = shallowMount(Event, { global, props: mockEvents.edge })
-    return positionCheckRecursive(
+    return positionCheckAsync(
       wrapper,
       `${mockEvents.edge.position.x}px`,
       `${mockEvents.edge.position.y}px`,
