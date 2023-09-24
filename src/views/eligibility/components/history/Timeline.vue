@@ -30,6 +30,8 @@ let resizeHandler: () => void
 let remainingEvents = [...props.timelineEvents]
 let lastWindowHeight = 0
 
+const emit = defineEmits(['drawingStarted', 'drawingDone'])
+
 onMounted(() => {
   if (canvasRef.value) {
     const ctx = canvasRef.value.getContext('2d')
@@ -228,6 +230,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
       ctx.lineTo(mainLineCenter + rem / 2, ctx.canvas.height - 10)
       ctx.stroke()
       store.setTimelineAnimating(false)
+      emit('drawingDone')
     }
 
     if (progress < 1) {
@@ -264,6 +267,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     drawEligibilityWindow()
   }
 
+  emit('drawingStarted')
   drawTimeline()
 }
 

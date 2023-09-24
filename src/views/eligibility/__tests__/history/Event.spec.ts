@@ -11,18 +11,17 @@ import { formatDate } from '@/util/dates/formatDate'
 
 import mockEvents from '../mock/events'
 
-const positionCheckAsync = (
+type PositionCheckFn = (
   wrapper: VueWrapper<InstanceType<typeof Event>>,
   x: string,
   y: string,
   lineLength: string
-) => {
-  return new Promise((resolve, done) => {
-    const checkPosition = (
-      wrapper: VueWrapper<InstanceType<typeof Event>>,
-      x: string,
-      y: string
-    ) => {
+) => Promise<boolean | Error>
+
+const positionCheckAsync = (...args: Parameters<PositionCheckFn>) => {
+  return new Promise((resolve, reject) => {
+    const checkPosition = (...args: Parameters<PositionCheckFn>) => {
+      const [wrapper, x, y, lineLength] = args
       if (wrapper.emitted()['visibleStylesSet']) {
         const styles = window.getComputedStyle(wrapper.element)
         const lineStyles = window.getComputedStyle(wrapper.get('.line').element)
@@ -32,15 +31,15 @@ const positionCheckAsync = (
           expect(lineStyles.width).toBe(lineLength)
           resolve(true)
         } catch (e) {
-          done(e)
+          reject(e)
         }
       } else {
         setTimeout(() => {
-          checkPosition(wrapper, x, y)
+          checkPosition(...args)
         }, 100)
       }
     }
-    checkPosition(wrapper, x, y)
+    checkPosition(...args)
   })
 }
 
