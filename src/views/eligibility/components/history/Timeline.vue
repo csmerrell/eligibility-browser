@@ -11,10 +11,16 @@ import { getNextRenderEvent, getMeasurements, lineLengths } from './util/eventRe
 //types
 import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
 import type { RenderedEvent } from '../../model/Event'
+type TimelineProps = ClaimantProps & {
+  dimensions?: {
+    height: number
+    width: number
+  }
+}
 
 const store = useEligibilityStore()
 
-const props = defineProps<ClaimantProps>()
+const props = defineProps<TimelineProps>()
 
 const el = ref<HTMLDivElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -31,9 +37,11 @@ let remainingEvents = [...props.timelineEvents]
 let lastWindowHeight = 0
 
 const emit = defineEmits(['drawingStarted', 'drawingDone'])
+defineExpose({ remainingEvents })
 
 onMounted(() => {
   if (canvasRef.value) {
+    store.renderedEvents = []
     const ctx = canvasRef.value.getContext('2d')
     // Initialize canvas dimensions
     resizeCanvas()
@@ -132,11 +140,13 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     firstEventTime: number,
     pixelTimespan: number
   ): RenderedEvent | undefined => {
-    if (currentTime - lastFrameTime > 15 && ctx!.canvas.height * progress > topBuffer) {
+    const canvasHeight = Math.max(ctx.canvas.height, props.dimensions?.height ?? 0)
+
+    if (currentTime - lastFrameTime > 15 && canvasHeight * progress > topBuffer) {
       lastFrameTime = currentTime
 
       const { nextEvent, remainingEvents: shiftedEvents } = getNextRenderEvent({
-        canvasHeight: ctx!.canvas.height,
+        canvasHeight,
         canvasTop: el.value!.offsetTop,
         lineProgress: progress,
         firstEventTime,
@@ -166,18 +176,19 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     const currentTime = Date.now()
     const elapsedTime = currentTime - startTime
     const progress = Math.min(elapsedTime / duration, 1)
+    const lineHeight = Math.max(ctx.canvas.height, props.dimensions?.height ?? 0)
 
-    const { firstEventTime, pixelTimespan, topBuffer } = getMeasurements(props, ctx.canvas.height)
+    const { firstEventTime, pixelTimespan, topBuffer } = getMeasurements(props, lineHeight)
 
     // Clear the canvas
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    ctx.clearRect(0, 0, ctx.canvas.width, lineHeight)
 
     // Draw the 1rem bar at the top
     ctx.fillStyle = '#000'
     ctx.fillRect(mainLineCenter - rem / 2, 0, rem, 2)
 
     // Draw the 1px stroke line
-    const lineLength = ctx.canvas.height * progress
+    const lineLength = lineHeight * progress
     ctx.strokeStyle = '#000'
     ctx.lineWidth = 1
     ctx.beginPath()
@@ -195,9 +206,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     ctx.lineTo(mainLineCenter, 9 + Math.sin(angle) * 9) // Right 3 pixels at 45 degrees
 
     // Draw main vertical line
-    const newY = 6 + Math.sin(angle) * 15 // The Y-coordinate where the zigzag ends
-    ctx.lineTo(mainLineCenter, newY + lineLength)
-
+    ctx.lineTo(mainLineCenter, lineLength)
     ctx.stroke()
 
     const nextEvent = conditionallyRenderEvent(
@@ -224,10 +233,10 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     if (progress === 1) {
       ctx.strokeStyle = '#000'
       ctx.beginPath()
-      ctx.moveTo(mainLineCenter, ctx.canvas.height)
-      ctx.lineTo(mainLineCenter - rem / 2, ctx.canvas.height - 10)
-      ctx.moveTo(mainLineCenter, ctx.canvas.height)
-      ctx.lineTo(mainLineCenter + rem / 2, ctx.canvas.height - 10)
+      ctx.moveTo(mainLineCenter, lineHeight)
+      ctx.lineTo(mainLineCenter - rem / 2, lineHeight - 10)
+      ctx.moveTo(mainLineCenter, lineHeight)
+      ctx.lineTo(mainLineCenter + rem / 2, lineHeight - 10)
       ctx.stroke()
       store.setTimelineAnimating(false)
       emit('drawingDone')
@@ -243,11 +252,11 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
         // or the current main timeline's progress, whichever is smaller.
         const effectiveEnd = window.end !== undefined ? Math.min(window.end, progress) : progress
 
-        const startLineLength = ctx.canvas.height * window.start - 7
-        const endLineLength = ctx.canvas.height * effectiveEnd - 8
+        const startLineLength = lineHeight * window.start - 7
+        const endLineLength = lineHeight * effectiveEnd - (window.end ? 8 : 0)
 
         // Setup for the rectangle
-        ctx.strokeStyle = 'blue'
+        ctx.strokeStyle = '#4d2277'
         ctx.lineWidth = 1
         ctx.fillStyle = '#e6d7f4'
         ctx.beginPath()

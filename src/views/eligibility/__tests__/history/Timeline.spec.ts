@@ -10,36 +10,93 @@ import Timeline from '../../components/history/Timeline.vue'
 //data
 import mockData from '@/../public/api-data.json'
 import { Claimant, type RawClaimant } from '@/views/eligibility/model/Claimant'
+import { useEligibilityStore } from '@/stores/eligibility'
+import { createPinia } from 'pinia'
 
 const mockClaimant = new Claimant(mockData[2] as RawClaimant)
 
 type TimelineInstance = VueWrapper<InstanceType<typeof Timeline>>
-type CanvasCheckFn = (wrapper: TimelineInstance) => Promise<boolean | Error>
+type MockCanvasRenderingContext2D = CanvasRenderingContext2D & {
+  _events: {
+    type: string
+    transform: number[]
+    props: {
+      x: number
+      y: number
+      width: number
+      height: number
+    }
+  }[]
+}
 
-const checkCanvasAsync = (...args: Parameters<CanvasCheckFn>) => {
+const checkCanvasAsync = (
+  wrapper: TimelineInstance,
+  dimensions: { height: number; width: number }
+) => {
   return new Promise((resolve, reject) => {
-    const checkFn = (...args: Parameters<CanvasCheckFn>) => {
-      const [wrapper] = args
-      if (wrapper.emitted()['drawingDone']) {
-        try {
-          debugger
-          resolve(true)
-        } catch (e) {
-          reject(e)
+    const checkFn = (wrapper: TimelineInstance) => {
+      const canvasEl = wrapper.get('canvas').element
+      const context = canvasEl.getContext('2d') as MockCanvasRenderingContext2D
+      if (context && wrapper.emitted()['drawingStarted']) {
+        expect(canvasEl.height).toBe(150)
+
+        const maxY = context._events.reduce((max, e) => (e.props.y > max ? e.props.y : max), 0)
+        if (!wrapper.emitted()['drawingDone']) {
+          try {
+            //Line draw in progress. 0 < endpoint < dimensions.height.
+            expect(maxY).toBeLessThan(dimensions.height)
+            expect(maxY).toBeGreaterThan(0)
+            resolve(true)
+          } catch (e) {
+            reject(e)
+          }
+        } else {
+          try {
+            //Line completely drawn. Endpoint matches canvas height.
+            expect(maxY).toBe(dimensions.height)
+            resolve(true)
+          } catch (e) {
+            reject(e)
+          }
         }
-      } else {
-        setTimeout(() => checkFn(...args), 100)
+      }
+
+      if (!wrapper.emitted()['drawingDone']) {
+        setTimeout(() => checkFn(wrapper), 100)
       }
     }
-    checkFn(...args)
+    checkFn(wrapper)
   })
 }
 
-describe('YourComponent', () => {
+const checkDrawingDone = (wrapper: TimelineInstance) => {
+  return new Promise((resolve) => {
+    const checkFn = (wrapper: TimelineInstance) => {
+      if (wrapper.emitted()['drawingDone']) {
+        resolve(true)
+      } else {
+        setTimeout(() => checkFn(wrapper), 100)
+      }
+    }
+    checkFn(wrapper)
+  })
+}
+
+describe('Timeline', () => {
   let wrapper: TimelineInstance
+  const dimensions = {
+    height: 800,
+    width: 400
+  }
 
   beforeEach(() => {
-    wrapper = mount(Timeline, { global, props: mockClaimant })
+    wrapper = mount(Timeline, {
+      global,
+      props: {
+        ...mockClaimant,
+        dimensions
+      }
+    })
   })
 
   afterEach(() => {
@@ -55,12 +112,29 @@ describe('YourComponent', () => {
     expect(canvas.exists()).toBe(true)
   })
 
-  it('draws on the canvas when mounted', async () => {
-    const canvas = wrapper.find('canvas').element
-    const context = canvas.getContext('2d')
-
-    await checkCanvasAsync(wrapper)
+  it('animates a timeline on the canvas when mounted', () => {
+    checkCanvasAsync(wrapper, dimensions)
   })
 
-  // You can write more tests to test specific logic, props, emitted events, etc.
+  it("adds all claimaint events into the store's `renderedEvents` array", async () => {
+    //use a separate pinia to prevent issues from async test access
+    const pinia = createPinia()
+    const global = {
+      plugins: [pinia]
+    }
+    const dimensions = {
+      height: 800,
+      width: 800
+    }
+    const asyncSafeWrapper = mount(Timeline, {
+      global,
+      props: {
+        ...mockClaimant,
+        dimensions
+      }
+    })
+    await checkDrawingDone(asyncSafeWrapper)
+    const store = useEligibilityStore()
+    expect(store.renderedEvents).toHaveLength(8) //born + all lifetime events
+  })
 })

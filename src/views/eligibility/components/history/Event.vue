@@ -15,7 +15,6 @@ const lineEl = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   setTimeout(() => {
-    console.log()
     if (!el.value || !lineEl.value) return
     el.value.style.setProperty('top', `${position.y}px`)
     el.value.style.setProperty('left', `${position.x}px`)
