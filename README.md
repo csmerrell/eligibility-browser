@@ -41,6 +41,24 @@ npm run dev
 
 **Note** You might want to disable `Vetur` (vue 2) if you have it installed.
 
+## Unit tests (Vitest)
+Unit tests are built around the test runner `Vitest`. It's syntactically similar to jest, with similar testing strategies. It's also significantly faster than jest.
+
+All tests:
+```bash
+npm run test:unit
+```
+
+For a specific file:
+```bash
+npm run test:unit -- partial/filePath/from/src
+```
+
+For coverage:
+```bash
+npm run test:unit -- --coverage
+```
+
 ## Code Highlights
 Here are some simple run-downs of the most significant portions of the code.
 
