@@ -1,16 +1,6 @@
 {
-  "name": "flex-hud",
-  "version": "0.0.8",
-  "main": "dist/flexHud.js",
-  "module": "dist/flexHud.mjs",
-  "types": "src/index.d.ts",
-  "files": [
-    "dist/*",
-    "src/index.d.ts"
-  ],
-  "peerDependencies": {
-    "vue": "^3.3.4"
-  },
+  "name": "insurance-eligibility-browser",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "rollup -c --bundleConfigAsCjs",
