@@ -13,10 +13,7 @@ const store = useEligibilityStore()
 <template>
   <div v-if="store.selectedClaimant" class="claimant-history">
     <PanelHeader>History</PanelHeader>
-    <Timeline
-      v-bind="{ ...store.selectedClaimant, dimensions: { height: 500, width: 400 }, duration: 400 }"
-      class="timeline"
-    />
+    <Timeline v-bind="store.selectedClaimant" class="timeline" />
     <Events />
   </div>
 </template>

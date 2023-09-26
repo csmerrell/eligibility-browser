@@ -1,5 +1,5 @@
 # Claire Merrell - Glorious Gumball Insurance Eligibility Dashboard
-A demo applet that matches mock employees, retirees, and their dependents to an insurance eligibility timeline graph. Started 9/17/23, finished 9/19/23.
+A demo applet that matches mock employees, retirees, and their dependents to an insurance eligibility timeline graph.
 
 ### Stack
 * Typescript
@@ -8,8 +8,6 @@ A demo applet that matches mock employees, retirees, and their dependents to an 
 * Vite (bundler & SPA server)
 * Vue router
 * Node 20 & npm
-
-**Link:** My notes on [Scaling](#notes-on-scaling) an app like this for larger, more complex data pulls. 
 
 ## Usage / Getting Started
 Requirements:
@@ -39,10 +37,14 @@ npm run dev
 - Vue Language Features (Volar)
 - Typescript Vue Pluging (Volar)
 
-**Note** You might want to disable `Vetur` (vue 2) if you have it installed.
+**Note** Make sure any extensions for older versions of Vue are disabled.
 
 ## Unit tests (Vitest)
-Unit tests are built around the test runner `Vitest`. It's syntactically similar to jest, with similar testing strategies. It's also significantly faster than jest.
+Unit tests are built around the test runner `Vitest`. It's syntactically similar to jest, with similar testing strategies.
+
+Tests are outcome-driven on the following pattern:
+- Test baselines (e.g. - mount & render for all possible component input states).
+- Simulate possible user interactions and test that they result in the correct output.
 
 All tests:
 ```bash
