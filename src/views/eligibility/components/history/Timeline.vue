@@ -16,11 +16,13 @@ type TimelineProps = ClaimantProps & {
     height: number
     width: number
   }
+  duration?: number
 }
 
 const store = useEligibilityStore()
 
 const props = defineProps<TimelineProps>()
+const { dimensions, duration: durationOverride } = props
 
 const el = ref<HTMLDivElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -87,8 +89,8 @@ function resizeCanvas() {
 
   if (el.value && canvasRef.value) {
     const rect = el.value.getBoundingClientRect()
-    canvasRef.value.width = rect.width - rem * 3
-    canvasRef.value.height = rect.height - rem * 3
+    canvasRef.value.width = dimensions?.width ?? rect.width - rem * 3
+    canvasRef.value.height = dimensions?.height ?? rect.height - rem * 3
   }
 }
 
@@ -119,7 +121,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
 
   //constants
   const startTime = Date.now()
-  const duration = 800 // 800ms
+  const duration = durationOverride ?? 800 // 800ms
   const mainLineCenter = Math.min(Math.max(ctx.canvas.width / 8, 150), 170)
 
   //used for eligbility drawing
@@ -140,7 +142,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     firstEventTime: number,
     pixelTimespan: number
   ): RenderedEvent | undefined => {
-    const canvasHeight = Math.max(ctx.canvas.height, props.dimensions?.height ?? 0)
+    const canvasHeight = Math.max(ctx.canvas.height, dimensions?.height ?? 0)
 
     if (currentTime - lastFrameTime > 15 && canvasHeight * progress > topBuffer) {
       lastFrameTime = currentTime
@@ -176,7 +178,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     const currentTime = Date.now()
     const elapsedTime = currentTime - startTime
     const progress = Math.min(elapsedTime / duration, 1)
-    const lineHeight = Math.max(ctx.canvas.height, props.dimensions?.height ?? 0)
+    const lineHeight = Math.max(ctx.canvas.height, dimensions?.height ?? 0)
 
     const { firstEventTime, pixelTimespan, topBuffer } = getMeasurements(props, lineHeight)
 
@@ -302,9 +304,5 @@ const addBirthEvent = (position: { x: number; y: number }): void => {
 <style scoped lang="scss">
 .timeline {
   padding: 1rem 0;
-  .canvas {
-    height: 100%;
-    width: 100%;
-  }
 }
 </style>

@@ -18,7 +18,10 @@ export const mockEvents = {
   claim: {
     ...defaultEvent,
     type: 'claim',
-    claim: {}
+    claim: {
+      claim_amount: 63.24,
+      claim_date: new Date('June 1 2023')
+    }
   }
 }
 
