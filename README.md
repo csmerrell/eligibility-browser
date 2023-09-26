@@ -46,14 +46,15 @@ Tests are outcome-driven on the following pattern:
 - Test baselines (e.g. - mount & render for all possible component input states).
 - Simulate possible user interactions and test that they result in the correct output.
 
+### Running unit tests
 All tests:
 ```bash
 npm run test:unit
 ```
 
-For a specific file:
+A specific file:
 ```bash
-npm run test:unit -- partial/filePath/from/src
+npm run test:unit -- fullOrPartial/filePath/from/src
 ```
 
 For coverage:
@@ -72,7 +73,7 @@ Most of it is in the [src/views/eligibility](src/views/eligibility) directory.
 - [FlexHud](#flexhud)
 
 ### Data Layer
-My root view component `src/views/eligbility/EligibilityDashboard.vue`(src/views/eligibility/EligibilityDashboard.vue) makes a call with the native JS `fetch` api to simulate querying the data set. Since I didn't have an endpoint to query against, I had it query the file out of my applets own public folder:
+The root view component `src/views/eligbility/EligibilityDashboard.vue`(src/views/eligibility/EligibilityDashboard.vue) makes a call with the native JS `fetch` api to simulate querying the data set. This isn't pulling from a live data source, so it hosts its own mock data file in the public directory, and the app fetches that as if it were external:
 - [src/views/eligibility/data/parseClaimants.ts](src/views/eligibility/data/parseClaimants.ts)
 
 This takes each claimant record from the fetched json array and constructs a javascript class `Claimant` out of it:
@@ -80,7 +81,13 @@ This takes each claimant record from the fetched json array and constructs a jav
 
 The Claimant class uses several other types and classes within the same `model` folder to shape the retrieved data into something easier to use in the view's component tree.
 
-**Note:** For readability, I wanted to use javascript array methods (e.g. - `reduce`, `map`, `filter`), but `Array.forEach` allowed me to do similar data reduction in `O(n)` compared to more readable algorithms that would run up to `O(3n)`. At small data sets, readability > performance, but this data can get big.
+**Note:** There's a small performance vs. readability tradeoff in the Claimant constructor: 
+- More readable: `Array.filter(...).map(...).reduce(...)`
+  - Performance complexity: `O(3n)`
+- More performant: `Array.forEach(...)`
+  - Performance complexity: `O(n)`
+
+A negligible performance cost for small data sets, but noteworthy for very large sets.
 
 ### Typescript
 Everything is typed. Lots of it uses hooks that are new in vue 3 to leverage automatic type inference
@@ -93,38 +100,38 @@ The component tree is broken into 3 main panels:
 
 The root [EligibilityDashboard.vue](src/views/eligibility/EligibilityDashboard.vue) component uses vue3's built-in `teleport` component to send the left and right panels into lower-level panels controlled by a separate component called [FlexHud](#flexhud), which exposes hooks to control collapse/expand events for each panel.
 
-[People](src/views/eligibility/components/people/), [History](src/views/eligibility/components/history/), and [Claims](src/views/eligibility/components/claims/) are pretty straightforward single page application component trees.
-
-You'll see lots of components create a `store` object using an imported `useEligibilityStore` method. This method returns a singleton state management object, which lets components in different parts of the component tree communicate without having to ferry data up and down the tree.
+[People](src/views/eligibility/components/people/), [History](src/views/eligibility/components/history/), and [Claims](src/views/eligibility/components/claims/) are pretty straightforward single page application component trees. They use a shared `pinia` store to communicate app-level state changes, called with `useEligibilityStore`.
 
 ### Canvas Timeline
 The most complex component in the tree (by a wide margin) is the [Timeline](src/views/eligibility/components/history/Timeline.vue). It honestly needs to be cleaned up to meet my standards. There are definitely aspects of it that are rushed.
 
-This particular graph is _highly_ custom, so I opted for generating it with the native HTML `canvas` tool. d3 was an option, but it has some drawbacks:
-- Adds overhead to the SPA's filesize (though this is typically reduced by importing it from a source that will be cached)
-- d3 is historically geared toward SVG, which isn't as well optimized as canvas. 
-  - d3 AND canvas is an option, granted.
+This particular graph is _highly_ custom, so I opted for generating it with an HTML `canvas`. d3 was an option, but I didn't use it for the following reasons:
+- Adds overhead to the SPA's filesize (typically not a concern if hosted elsewhere. Repeat users will have it cached. My site guests aren't typically repeat visitors.)
+- d3 is historically geared toward SVG, which isn't as well optimized as canvas.
+  - d3 AND canvas is an option, but I haven't explored it yet.
 - I'm not sure that d3 would have actually reduced any complexity in this particular graph.
 
-The historical strength of d3 is that it exposes hooks to the developer that update you when data changes. These can be useful, but Vue's data reactivity actually let me drive the animations in the opposite direction:
-
-- d3 => Plug data into d3 tools => d3 emits events => vue listens to those events to update its data state.
-- vue => makes its own data state mutations => maps those to canvas animation frames.
-
-TL;DR - Long term, if we're doing tons of highly customized graphs, training up team members in d3 is definitely a priority. For one-off graphs, it's a heavy import with a big learning curve that, depending on the graph, may not actually simplify anything.
+The most interesting tradeoff (imo) is the different state flows you can achieve between d3 + vue, compared to plain vue.
+- d3 + vue:
+  1. Plug data into d3 tools.
+  2. d3 emits events as graphs animate.
+  3. Vue listens to those events to update its data state.
+- vue + plain canvas:
+  1. Vue controls state mutation.
+  2. Vue maps those to canvas animation frames.
 
 ### FlexHud
-The [FlexHud](src/components/flexHud/FlexHud.vue) component is something I designed myself a couple years ago. I originally wrote it in vue 2 at work. I had a half-implemented vue 3 version of it that I tried to rapidly finish while working on this. It's still got some issues, but for this scope it works. 
+The [FlexHud](src/components/flexHud/FlexHud.vue) component is something I designed myself a couple years ago. I originally wrote it in vue 2. A side project to finish a generic, portable version in vue 3 is in progress.
 
-I'm working on making it fully portable as an open source tool.
+This uses a fork of that in-progress flex-hud 3 version of it that I rapidly tidied up to finish this demo.
 
-It: 
-- Eliminates the need to carry header or side-panel positioning offsets anywhere else in your code. 
+FlexHud features:
+- Eliminates the need to carry header or side-panel positioning offsets anywhere else in your code.
 - Encapsulates HUD animations and exposes hooks to control expand/collapse states.
-- (Still a WIP in this vue3 version) is easy to convert into mobile-first or responsive designs.
+- (Still a WIP) Is easy to convert into mobile-first or responsive designs.
 
 ## Notes on Scaling
-Several things would need attention to scale this up:
+An application like this would typically scale into the multiple 1,000s of claimants/claims. Several things would need attention to scale it:
 
 ### # of Claims
 To handle more claims, the main strategies would be:
@@ -133,7 +140,7 @@ To handle more claims, the main strategies would be:
   * Alternatively, annual claims could be restricted to a separate view that is opened on clicking the bundled claim entry in the `claims` panel.
 2. Reduce the amount of up-front data parsing/shaping that happens on page load.
   * Right now, it parses everything before it renders anything. This would have to go immediately to scale it up.
-  * If each claimant has 100s or more claims, then parsing needs to happen asynchronously with lazy loading strategy.
+  * If each claimant has 100s or more claims, then parsing needs to happen asynchronously with a lazy loading strategy.
 3. Add claim filtering:
   * Set some default filters. Let users have more granular control over them.
 4. Add an aggregate claim view that bundles claims with similar scopes 
@@ -141,10 +148,15 @@ To handle more claims, the main strategies would be:
 5. Tighten up the canvas file's performance.
   * Framerate demands can be improved by letting Vue control animation frames.  
 6. Test for overhead on vue observables.
-  * This is a huge concern in modern web frameworks. Data mutations trigger extra life-cycle/render events. 
-  * It probably isn't a likely performance hit on this particular graph, because most data is generated once and the only mutations changing are animations.
-7. Tighten up parsing algorithms.
-  * I already tightened them up, so they're not the biggest performance hindrance. Everything is generally O(n), so driving down the size of `n` will yield more results. This would be a distant concern after all the above concerns.
+  * A huge concern in modern web frameworks, when excess data mutations trigger extra life-cycle/render events.
+  * Mostly a concern in views with multi-directional state mutations. This app currently only has unidirectional state mutations:
+    1. The selected claimant is changed
+    2. The timeline renders & populates events
+    3. Events mount & fade in as they're added.
+      * The events array changes while renders are happening, but each event component is keyed such that it doesn't re-render existing events unnecessarily.
+7. Low-level implementation optimizations.
+  * This would be a distant concern after all the above concerns.
+  * Current low-level implementations are already all `O(n)`. Driving down the size of `n` with filter/reduce/aggregation strategies will generally yield more results than trying to optimize further.
 
 
 ### # of Employees, Dependents, Retirees
