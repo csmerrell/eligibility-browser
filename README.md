@@ -1,4 +1,4 @@
-# Claire Merrell - Glorious Gumball Insurance Eligibility Dashboard
+# Insurance Eligibility Dashboard
 A demo applet that matches mock employees, retirees, and their dependents to an insurance eligibility timeline graph.
 
 ### Stack
