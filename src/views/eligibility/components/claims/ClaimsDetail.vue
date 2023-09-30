@@ -11,13 +11,15 @@ import type { RenderedEvent } from '@/views/eligibility/model/Event'
 
 //store
 import { useEligibilityStore } from '@/stores/eligibility'
+import { useFlexHudStore } from 'flex-hud'
 const store = useEligibilityStore()
+const hudStore = useFlexHudStore()
 
 const hasClaims = computed(() => store.hasClaims)
 
 watch(hasClaims, () => {
-  if (hasClaims.value) {
-    store.setRightPaneVisiblity(true)
+  if (hasClaims.value && !hudStore.isCompact) {
+    hudStore.expandRightPane()
   }
 })
 

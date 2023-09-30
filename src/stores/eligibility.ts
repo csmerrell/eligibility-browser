@@ -1,21 +1,21 @@
+//vue
 import { defineStore } from 'pinia'
+
+//types
 import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
 import type { RenderedEvent, RenderedClaim } from '@/views/eligibility/model/Event'
+type FocusPane = 'left' | 'main' | 'right'
 
-// Use the `defineStore` method to define a new store
 export const useEligibilityStore = defineStore({
-  // unique identifier of the store across your application
   id: 'eligibility',
 
-  // state properties (single source of truth)
   state: () => ({
     renderedEvents: [] as RenderedEvent[],
     selectedClaimant: null as ClaimantProps | null,
     timelineAnimating: false,
-    setRightPaneVisiblity: (() => {}) as (val: boolean) => void
+    focusPane: null as FocusPane | null
   }),
 
-  // getters
   getters: {
     numClaims(): number {
       return (
@@ -30,16 +30,25 @@ export const useEligibilityStore = defineStore({
     }
   },
 
-  // actions (public mutations)
   actions: {
-    setSelectedClaimant(value: ClaimantProps) {
-      this.selectedClaimant = value
-    },
     addRenderedEvent(event: RenderedEvent) {
       this.renderedEvents.push(event)
     },
     clearRenderedEvents() {
       this.renderedEvents = []
+    },
+    setSelectedClaimant(value: ClaimantProps): void {
+      if (this.selectedClaimant?.uniqueId == value.uniqueId) {
+        this.selectedClaimant = null
+      } else {
+        this.selectedClaimant = value
+      }
+
+      if (this.selectedClaimant) {
+        this.focusPane = 'main'
+      } else {
+        this.focusPane = 'left'
+      }
     },
     setTimelineAnimating(val: boolean) {
       this.timelineAnimating = val

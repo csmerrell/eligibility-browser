@@ -18,6 +18,7 @@ export interface ClaimantProps {
   first_name: string
   last_name: string
   uniqueId: string
+  full_name: string
 }
 
 export class Claimant {
@@ -27,6 +28,7 @@ export class Claimant {
   timelineEvents: TimelineEvent[]
   date_of_birth: Date
   uniqueId: string
+  full_name: string
 
   //inherited
   eligibility_history!: RawEligibilityRecord[]
@@ -36,6 +38,7 @@ export class Claimant {
   constructor(rawClaimant: RawClaimant) {
     const { date_of_birth, claims, ...rest } = rawClaimant
 
+    this.full_name = `${rawClaimant.last_name}, ${rawClaimant.first_name}`
     this.date_of_birth = new Date(date_of_birth)
     this.uniqueId = `${rawClaimant.first_name} ${rawClaimant.last_name} ${rawClaimant.date_of_birth}`
 
