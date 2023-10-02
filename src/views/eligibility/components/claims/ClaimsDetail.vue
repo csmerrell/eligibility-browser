@@ -5,6 +5,7 @@ import { computed, watch, type CSSProperties } from 'vue'
 //component
 import PanelHeader from '../PanelHeader.vue'
 import Claim from './Claim.vue'
+import { BoxRebaser, HeightRebaser } from 'coordinate-rebaser'
 
 //types
 import type { RenderedEvent } from '@/views/eligibility/model/Event'
@@ -34,13 +35,17 @@ const getStyles = (claim: RenderedEvent): CSSProperties => {
   <div class="claims-detail">
     <PanelHeader>Claims</PanelHeader>
     <div class="claims-wrapper">
-      <Claim
-        v-for="renderedClaim in store.renderedClaims"
-        :key="renderedClaim.claim.claim_id"
-        class="claim"
-        :style="getStyles(renderedClaim)"
-        v-bind="renderedClaim"
-      />
+      <BoxRebaser>
+        <div>
+          <Claim
+            v-for="renderedClaim in store.renderedClaims"
+            :key="renderedClaim.claim.claim_id"
+            class="claim"
+            :style="getStyles(renderedClaim)"
+            v-bind="renderedClaim"
+          />
+        </div>
+      </BoxRebaser>
     </div>
     <div class="claims-total">Total Claims: ${{ store.selectedClaimant?.totalClaimAmount }}</div>
   </div>

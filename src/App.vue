@@ -84,7 +84,7 @@ const midWidthBreakpoint = 1200
 
 const leftPaneConfig: SidePaneProps = {
   initExpanded: true,
-  width: '24rem'
+  width: '27rem'
 }
 
 const rightPaneConfig: SidePaneProps = {
@@ -136,6 +136,7 @@ const config: FlexHudProps = {
   #main-right-pane,
   #main-left-pane {
     height: 100%;
+    overflow-x: hidden;
   }
 
   &.flex-hud {

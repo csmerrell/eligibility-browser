@@ -19,6 +19,7 @@ export interface ClaimantProps {
   last_name: string
   uniqueId: string
   full_name: string
+  id: number
 }
 
 export class Claimant {
@@ -31,6 +32,7 @@ export class Claimant {
   full_name: string
 
   //inherited
+  id!: number
   eligibility_history!: RawEligibilityRecord[]
   first_name!: string
   last_name!: string

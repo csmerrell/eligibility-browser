@@ -10,7 +10,7 @@ const store = useEligibilityStore()
   <div class="events">
     <Event
       v-for="(event, idx) in store.renderedEvents"
-      :key="`${idx}-${event.desc}`"
+      :key="`${idx}-${event.desc}-${event.date}`"
       v-bind="event"
     />
   </div>

@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 
 //types
-import type { ClaimantProps } from '@/views/eligibility/model/Claimant'
+import type { Claimant, ClaimantProps } from '@/views/eligibility/model/Claimant'
 import type { RenderedEvent, RenderedClaim } from '@/views/eligibility/model/Event'
 type FocusPane = 'left' | 'main' | 'right'
 
@@ -11,6 +11,7 @@ export const useEligibilityStore = defineStore({
 
   state: () => ({
     renderedEvents: [] as RenderedEvent[],
+    claimants: [] as Claimant[],
     selectedClaimant: null as ClaimantProps | null,
     timelineAnimating: false,
     focusPane: null as FocusPane | null
@@ -38,7 +39,7 @@ export const useEligibilityStore = defineStore({
       this.renderedEvents = []
     },
     setSelectedClaimant(value: ClaimantProps): void {
-      if (this.selectedClaimant?.uniqueId == value.uniqueId) {
+      if (this.selectedClaimant?.id == value.id) {
         this.selectedClaimant = null
       } else {
         this.selectedClaimant = value

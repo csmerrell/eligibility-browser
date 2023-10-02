@@ -297,7 +297,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
 const addBirthEvent = (position: { x: number; y: number }): void => {
   if (store.renderedEvents.length === 0) {
     store.addRenderedEvent({
-      date: props.date_of_birth,
+      date: store.selectedClaimant!.date_of_birth,
       desc: 'Born',
       length: null,
       position,
