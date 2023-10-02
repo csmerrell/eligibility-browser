@@ -10,8 +10,8 @@ const store = useEligibilityStore()
 const scroller = ref<any | null>(null)
 const scrollWrapper = ref<HTMLElement | null>(null)
 
-const itemHeight = 52 // Set your item height here
-const bufferSize = 50 // Adjust the buffer size as needed (number of items)
+const itemHeight = 52
+const bufferSize = 20
 
 let lastScroll = Date.now()
 let scrollerIndex = 0 // Track the current scroll position
@@ -47,7 +47,7 @@ onBeforeUnmount(() => {
       <RecycleScroller
         ref="scroller"
         class="recycle-scroller"
-        :items="store.claimants.filter((c) => c.status === 'Dependent')"
+        :items="store.claimants"
         :item-size="itemHeight"
         :key-field="'id'"
         :min-index="Math.max(0, scrollerIndex - bufferSize)"
@@ -56,6 +56,9 @@ onBeforeUnmount(() => {
       >
         <ClaimantItem v-bind="item" />
       </RecycleScroller>
+      <!-- <div v-for="claimant in store.claimants" :key="claimant.id">
+        <ClaimantItem v-bind="claimant" />
+      </div> -->
     </div>
   </div>
 </template>

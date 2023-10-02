@@ -88,7 +88,7 @@ export class Claimant {
     })
 
     //set this.status to the latest eligibility event's status
-    for (let backIdx = this.timelineEvents.length - 1; backIdx > 0; backIdx--) {
+    for (let backIdx = this.timelineEvents.length - 1; backIdx >= 0; backIdx--) {
       const event = this.timelineEvents[backIdx]
       if (isEligibilityEvent(event)) {
         this.status = event.status

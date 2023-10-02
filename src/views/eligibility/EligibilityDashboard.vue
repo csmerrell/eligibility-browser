@@ -1,7 +1,4 @@
 <script setup lang="ts">
-//vue
-import { ref } from 'vue'
-
 //store
 import { useEligibilityStore } from '@/stores/eligibility'
 const store = useEligibilityStore()
@@ -26,7 +23,6 @@ const batchParseClaimants = (rawClaimants: RawClaimant[]) => {
   }
 }
 
-//observables
 getClaimants().then((rawClaimants: RawClaimant[]) => batchParseClaimants(rawClaimants))
 
 // getParsedClaimants().then((parsedClaimants) => (store.claimants = parsedClaimants))
