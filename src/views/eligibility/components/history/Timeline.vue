@@ -156,9 +156,20 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
   ): RenderedEvent | undefined => {
     const canvasHeight = Math.max(ctx.canvas.height, dimensions?.height ?? 0)
 
+    // if (store.selectedClaimant!.status === 'Dependent') {
+    //   console.log('Current Time', currentTime)
+    //   console.log('Progress', progress)
+    //   console.log('lastFrameTime', lastFrameTime)
+    //   console.log('firstEventTime', firstEventTime)
+    //   console.log('pixelTimespan', currentTime)
+    //   console.log('canvasHeight * progress', canvasHeight * progress)
+    //   console.log('topBuffer', topBuffer)
+    // }
+
     if (currentTime - lastFrameTime > 15 && canvasHeight * progress > topBuffer) {
       lastFrameTime = currentTime
 
+      console.log('pre-nextRenderedEvent')
       const { nextEvent, remainingEvents: shiftedEvents } = getNextRenderEvent({
         canvasHeight,
         canvasTop: el.value?.offsetTop ?? 0,
@@ -261,13 +272,14 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     }
 
     const drawEligibilityWindow = () => {
-      eligibilityWindows.forEach((window) => {
+      eligibilityWindows.forEach((eligWindow) => {
         // Determine the effective end point for this window, using either the window's end point
         // or the current main timeline's progress, whichever is smaller.
-        const effectiveEnd = window.end !== undefined ? Math.min(window.end, progress) : progress
+        const effectiveEnd =
+          eligWindow.end !== undefined ? Math.min(eligWindow.end, progress) : progress
 
-        const startLineLength = lineHeight * window.start - 7
-        const endLineLength = lineHeight * effectiveEnd - (window.end ? 8 : 0)
+        const startLineLength = lineHeight * eligWindow.start - 7
+        const endLineLength = lineHeight * effectiveEnd - (eligWindow.end ? 8 : 0)
 
         // Setup for the rectangle
         ctx.strokeStyle = '#4d2277'

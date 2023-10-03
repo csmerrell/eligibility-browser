@@ -38,8 +38,8 @@ export const useEligibilityStore = defineStore({
     clearRenderedEvents() {
       this.renderedEvents = []
     },
-    setSelectedClaimant(value: ClaimantProps): void {
-      if (this.selectedClaimant?.id == value.id) {
+    setSelectedClaimant(value: ClaimantProps | null): void {
+      if (!value || this.selectedClaimant?.id == value.id) {
         this.selectedClaimant = null
       } else {
         this.selectedClaimant = value

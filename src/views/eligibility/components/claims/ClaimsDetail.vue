@@ -29,13 +29,26 @@ const getStyles = (claim: RenderedEvent): CSSProperties => {
     top: `${claim.position.y}px`
   }
 }
+
+const openTimeline = () => {
+  if (store.timelineAnimating) return
+
+  hudStore.collapseRightPane()
+}
 </script>
 
 <template>
-  <div class="claims-detail">
+  <div v-if="!hudStore.mainPaneToggling" class="claims-detail">
     <PanelHeader>Claims</PanelHeader>
     <div class="claims-wrapper">
       <BoxRebaser>
+        <div
+          v-if="hudStore.isCompact && !hudStore.mainPaneToggling"
+          class="claims-collapse"
+          @click="openTimeline"
+        >
+          <span class="invert-arrow">➜</span>View Timeline
+        </div>
         <div>
           <Claim
             v-for="renderedClaim in store.renderedClaims"
@@ -75,6 +88,22 @@ const getStyles = (claim: RenderedEvent): CSSProperties => {
     background-color: var(--clr-dark-purple);
     color: var(--clr-white);
     text-align: center;
+  }
+
+  .claims-collapse {
+    color: var(--clr-dark-purple);
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    font-size: 0.8em;
+
+    .invert-arrow {
+      transform: scaleX(-1);
+      display: inline-block;
+      margin-right: 0.25rem;
+    }
   }
 }
 </style>
