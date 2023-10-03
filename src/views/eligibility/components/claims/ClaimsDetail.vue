@@ -5,19 +5,22 @@ import { computed, watch, type CSSProperties } from 'vue'
 //component
 import PanelHeader from '../PanelHeader.vue'
 import Claim from './Claim.vue'
+import { BoxRebaser, HeightRebaser } from 'coordinate-rebaser'
 
 //types
 import type { RenderedEvent } from '@/views/eligibility/model/Event'
 
 //store
 import { useEligibilityStore } from '@/stores/eligibility'
+import { useFlexHudStore } from 'flex-hud'
 const store = useEligibilityStore()
+const hudStore = useFlexHudStore()
 
 const hasClaims = computed(() => store.hasClaims)
 
 watch(hasClaims, () => {
-  if (hasClaims.value) {
-    store.setRightPaneVisiblity(true)
+  if (hasClaims.value && !hudStore.isCompact) {
+    hudStore.expandRightPane()
   }
 })
 
@@ -26,19 +29,36 @@ const getStyles = (claim: RenderedEvent): CSSProperties => {
     top: `${claim.position.y}px`
   }
 }
+
+const openTimeline = () => {
+  if (store.timelineAnimating) return
+
+  hudStore.collapseRightPane()
+}
 </script>
 
 <template>
-  <div class="claims-detail">
+  <div v-if="!hudStore.mainPaneToggling" class="claims-detail">
     <PanelHeader>Claims</PanelHeader>
     <div class="claims-wrapper">
-      <Claim
-        v-for="renderedClaim in store.renderedClaims"
-        :key="renderedClaim.claim.claim_id"
-        class="claim"
-        :style="getStyles(renderedClaim)"
-        v-bind="renderedClaim"
-      />
+      <BoxRebaser>
+        <div
+          v-if="hudStore.isCompact && !hudStore.mainPaneToggling"
+          class="claims-collapse"
+          @click="openTimeline"
+        >
+          <span class="invert-arrow">➜</span>View Timeline
+        </div>
+        <div>
+          <Claim
+            v-for="renderedClaim in store.renderedClaims"
+            :key="renderedClaim.claim.claim_id"
+            class="claim"
+            :style="getStyles(renderedClaim)"
+            v-bind="renderedClaim"
+          />
+        </div>
+      </BoxRebaser>
     </div>
     <div class="claims-total">Total Claims: ${{ store.selectedClaimant?.totalClaimAmount }}</div>
   </div>
@@ -68,6 +88,22 @@ const getStyles = (claim: RenderedEvent): CSSProperties => {
     background-color: var(--clr-dark-purple);
     color: var(--clr-white);
     text-align: center;
+  }
+
+  .claims-collapse {
+    color: var(--clr-dark-purple);
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    font-size: 0.8em;
+
+    .invert-arrow {
+      transform: scaleX(-1);
+      display: inline-block;
+      margin-right: 0.25rem;
+    }
   }
 }
 </style>

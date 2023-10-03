@@ -18,6 +18,8 @@ export interface ClaimantProps {
   first_name: string
   last_name: string
   uniqueId: string
+  full_name: string
+  id: number
 }
 
 export class Claimant {
@@ -27,8 +29,10 @@ export class Claimant {
   timelineEvents: TimelineEvent[]
   date_of_birth: Date
   uniqueId: string
+  full_name: string
 
   //inherited
+  id!: number
   eligibility_history!: RawEligibilityRecord[]
   first_name!: string
   last_name!: string
@@ -36,6 +40,7 @@ export class Claimant {
   constructor(rawClaimant: RawClaimant) {
     const { date_of_birth, claims, ...rest } = rawClaimant
 
+    this.full_name = `${rawClaimant.last_name}, ${rawClaimant.first_name}`
     this.date_of_birth = new Date(date_of_birth)
     this.uniqueId = `${rawClaimant.first_name} ${rawClaimant.last_name} ${rawClaimant.date_of_birth}`
 
@@ -83,7 +88,7 @@ export class Claimant {
     })
 
     //set this.status to the latest eligibility event's status
-    for (let backIdx = this.timelineEvents.length - 1; backIdx > 0; backIdx--) {
+    for (let backIdx = this.timelineEvents.length - 1; backIdx >= 0; backIdx--) {
       const event = this.timelineEvents[backIdx]
       if (isEligibilityEvent(event)) {
         this.status = event.status

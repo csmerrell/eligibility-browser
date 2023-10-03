@@ -4,6 +4,7 @@ import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 //store
 import { useEligibilityStore } from '@/stores/eligibility'
+import { useFlexHudStore } from 'flex-hud'
 
 //util
 import { getNextRenderEvent, getMeasurements, lineLengths } from './util/eventRendering'
@@ -20,6 +21,7 @@ type TimelineProps = ClaimantProps & {
 }
 
 const store = useEligibilityStore()
+const hudStore = useFlexHudStore()
 
 const props = defineProps<TimelineProps>()
 const { dimensions, duration: durationOverride } = props
@@ -94,23 +96,33 @@ function resizeCanvas() {
   }
 }
 
+const redraw = () => {
+  nextTick(() => {
+    //clear last claimant's events
+    remainingEvents = [...props.timelineEvents]
+    store.clearRenderedEvents()
+
+    // hide right panel if there are no claims
+    if (store.numClaims == 0) {
+      hudStore.collapseRightPane()
+    }
+
+    //redraw the graphic
+    const ctx = canvasRef.value!.getContext('2d')
+    // resizeCanvas();
+    drawCanvas(ctx)
+  })
+}
+
+watch(() => props.uniqueId, redraw)
 watch(
-  () => props.uniqueId,
-  () => {
+  () => hudStore.mainPaneToggling,
+  (next, prev) => {
     nextTick(() => {
-      //clear last claimant's events
-      remainingEvents = [...props.timelineEvents]
-      store.clearRenderedEvents()
-
-      // hide right panel if there are no claims
-      if (store.numClaims == 0) {
-        store.setRightPaneVisiblity(false)
+      if (!next) {
+        resizeCanvas()
+        redraw()
       }
-
-      //redraw the graphic
-      const ctx = canvasRef.value!.getContext('2d')
-      // resizeCanvas();
-      drawCanvas(ctx)
     })
   }
 )
@@ -149,7 +161,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
 
       const { nextEvent, remainingEvents: shiftedEvents } = getNextRenderEvent({
         canvasHeight,
-        canvasTop: el.value!.offsetTop,
+        canvasTop: el.value?.offsetTop ?? 0,
         lineProgress: progress,
         firstEventTime,
         lineCenter: mainLineCenter,
@@ -249,13 +261,14 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     }
 
     const drawEligibilityWindow = () => {
-      eligibilityWindows.forEach((window) => {
+      eligibilityWindows.forEach((eligWindow) => {
         // Determine the effective end point for this window, using either the window's end point
         // or the current main timeline's progress, whichever is smaller.
-        const effectiveEnd = window.end !== undefined ? Math.min(window.end, progress) : progress
+        const effectiveEnd =
+          eligWindow.end !== undefined ? Math.min(eligWindow.end, progress) : progress
 
-        const startLineLength = lineHeight * window.start - 7
-        const endLineLength = lineHeight * effectiveEnd - (window.end ? 8 : 0)
+        const startLineLength = lineHeight * eligWindow.start - 7
+        const endLineLength = lineHeight * effectiveEnd - (eligWindow.end ? 8 : 0)
 
         // Setup for the rectangle
         ctx.strokeStyle = '#4d2277'
@@ -285,7 +298,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
 const addBirthEvent = (position: { x: number; y: number }): void => {
   if (store.renderedEvents.length === 0) {
     store.addRenderedEvent({
-      date: props.date_of_birth,
+      date: store.selectedClaimant!.date_of_birth,
       desc: 'Born',
       length: null,
       position,
@@ -296,7 +309,7 @@ const addBirthEvent = (position: { x: number; y: number }): void => {
 </script>
 
 <template>
-  <div ref="el" class="timeline">
+  <div v-if="!hudStore.mainPaneToggling" ref="el" class="timeline">
     <canvas ref="canvasRef" />
   </div>
 </template>

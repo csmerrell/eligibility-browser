@@ -7,7 +7,7 @@ import { global } from '../setup'
 import ClaimantHistory from '@/views/eligibility/components/history/ClaimantHistory.vue'
 
 //mock data
-import mockData from '@/../public/api-data.json'
+import mockData from '@/../public/claimant-records-legacy.json'
 import { Claimant, type RawClaimant } from '../../model/Claimant'
 import { useEligibilityStore } from '@/stores/eligibility'
 

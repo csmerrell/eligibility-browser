@@ -7,7 +7,7 @@ import { global } from '../setup'
 import ClaimsDetail from '@/views/eligibility/components/claims/ClaimsDetail.vue'
 
 //mock data
-import mockData from '@/../public/api-data.json'
+import mockData from '@/../public/claimant-records-legacy.json'
 import { Claimant, type RawClaimant } from '@/views/eligibility/model/Claimant'
 const mockClaimant = new Claimant(mockData[2] as RawClaimant)
 

@@ -5,19 +5,17 @@ import { useEligibilityStore } from '@/stores/eligibility'
 
 const store = useEligibilityStore()
 const props = defineProps<ClaimantProps>()
-const { last_name, first_name, uniqueId, status } = props
 
-const fullName = computed(() => `${last_name}, ${first_name}`)
-const isSelected = computed(() => uniqueId === store.selectedClaimant?.uniqueId)
+const isSelected = computed(() => props.id === store.selectedClaimant?.id)
+
+const claimantClicked = () => {
+  store.timelineAnimating ? null : store.setSelectedClaimant({ ...props })
+}
 </script>
 
 <template>
-  <div
-    class="claimant"
-    :class="{ selected: isSelected }"
-    @click="store.timelineAnimating ? null : store.setSelectedClaimant(props)"
-  >
-    <span class="name">{{ fullName }}</span>
+  <div class="claimant" :class="{ selected: isSelected }" @click="claimantClicked">
+    <span class="name">{{ full_name }}</span>
     <span class="status">({{ status }})</span>
     <span v-if="isSelected" class="indicator">▶</span>
   </div>

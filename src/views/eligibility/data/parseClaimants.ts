@@ -14,7 +14,7 @@ export const getClaimants = () => {
   return fetch(
     `${currUrl.protocol}//${currUrl.hostname}${
       currUrl.port ? ':' + currUrl.port : ''
-    }/api-data.json`
+    }/claimant-records-legacy.json`
   )
     .then((response) => {
       // Check if the request was successful

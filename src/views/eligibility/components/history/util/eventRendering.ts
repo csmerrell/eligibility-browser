@@ -77,7 +77,7 @@ export function getNextRenderEvent(props: GetRenderEventProps): GetRenderEventRe
 
   const currTime = firstEventTime + pixelTimespan * canvasHeight * lineProgress
 
-  if (events.length > 0 && currTime > events[0].date.getTime()) {
+  if (events.length > 0 && currTime >= events[0].date.getTime()) {
     const event = events.splice(0, 1)[0]
     const renderedEvent = {
       desc: event.desc,

@@ -8,7 +8,7 @@ import { global } from '../setup'
 import Timeline from '../../components/history/Timeline.vue'
 
 //data
-import mockData from '@/../public/api-data.json'
+import mockData from '@/../public/claimant-records-legacy.json'
 import { Claimant, type RawClaimant } from '@/views/eligibility/model/Claimant'
 import { useEligibilityStore } from '@/stores/eligibility'
 import { createPinia } from 'pinia'
@@ -72,7 +72,6 @@ describe('Timeline: Async safe tests', () => {
               }
             } else {
               try {
-                console.log('drawingDone')
                 //Line completely drawn. Endpoint matches canvas height.
                 expect(maxY).toBe(dimensions.height)
                 resolve(true)

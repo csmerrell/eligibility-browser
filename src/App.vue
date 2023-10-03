@@ -1,39 +1,102 @@
 <script setup lang="ts">
-/**
- * An applet stub component to test the flex-hud component(s)
- */
-import { ref, watch } from 'vue'
-import FlexHud from '@/components/flexHud/FlexHud.vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
+import { FlexHud, useFlexHudStore, type FlexHudProps, type SidePaneProps } from 'flex-hud'
 import Header from '@/components/localHud/Header.vue'
-import type { FlexHudProps } from './components/flexHud/model/FlexHud'
 import { RouterView } from 'vue-router'
-
 import { useEligibilityStore } from './stores/eligibility'
+
 const store = useEligibilityStore()
+const hudStore = useFlexHudStore()
+hudStore.initState(config)
+
+//Watch selected claimant changes
+watch(
+  () => store.selectedClaimant,
+  (next, prev) => {
+    if (next) {
+      resize()
+    } else {
+      hudStore.expandLeftPane()
+      hudStore.collapseRightPane()
+    }
+  }
+)
+
+//Watch window resize hud state changes.
+const goCompact = () => {
+  if (store.focusPane === 'main') {
+    hudStore.collapseLeftPane()
+    hudStore.collapseRightPane()
+  } else {
+    hudStore.expandLeftPane()
+  }
+}
+
+const goMidWidth = () => {
+  if (store.focusPane === 'main') {
+    hudStore.collapseLeftPane()
+    hudStore.expandRightPane()
+  } else {
+    hudStore.expandLeftPane()
+  }
+}
+
+const goFull = () => {
+  hudStore.expandLeftPane()
+
+  if (store.focusPane === 'main') {
+    hudStore.expandRightPane()
+  }
+}
+
+let lastCheck = 0
+const compactCheckDebounce = 50
+const resize = () => {
+  if (window.innerWidth < compactBreakpoint) {
+    goCompact()
+  } else if (window.innerWidth < midWidthBreakpoint) {
+    goMidWidth()
+  } else {
+    goFull()
+  }
+}
+const debouncedResize = () => {
+  lastCheck = Date.now()
+  setTimeout(() => {
+    if (Date.now() - lastCheck < compactCheckDebounce) return
+    resize()
+  }, compactCheckDebounce)
+}
+window.addEventListener('resize', debouncedResize)
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', debouncedResize)
+  hudStore.$reset()
+  store.$reset()
+})
 
 const hud = ref<typeof FlexHud | null>(null)
-
-watch(hud, () => {
-  if (hud.value) {
-    store.setRightPaneVisiblity = hud.value.setRightPaneVisibility
-  }
-})
 </script>
 
 <script lang="ts">
-const leftPaneConfig = {
+const compactBreakpoint = 800
+const midWidthBreakpoint = 1200
+
+const leftPaneConfig: SidePaneProps = {
   initExpanded: true,
-  width: '23rem'
+  width: '27rem'
 }
 
-const rightPaneConfig = {
+const rightPaneConfig: SidePaneProps = {
   initExpanded: false,
   width: '18rem'
 }
+
 const config: FlexHudProps = {
   leftPaneConfig,
   rightPaneConfig,
-  singleSidePane: false
+  singleSidePane: false,
+  compactBreakpoint
 }
 </script>
 
@@ -46,7 +109,7 @@ const config: FlexHudProps = {
       <div id="main-left-pane" />
     </template>
     <template #main-pane>
-      <RouterView />
+      <RouterView v-if="hud" />
     </template>
     <template #right-pane>
       <div id="main-right-pane" />
@@ -73,6 +136,7 @@ const config: FlexHudProps = {
   #main-right-pane,
   #main-left-pane {
     height: 100%;
+    overflow-x: hidden;
   }
 
   &.flex-hud {
