@@ -156,20 +156,9 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
   ): RenderedEvent | undefined => {
     const canvasHeight = Math.max(ctx.canvas.height, dimensions?.height ?? 0)
 
-    // if (store.selectedClaimant!.status === 'Dependent') {
-    //   console.log('Current Time', currentTime)
-    //   console.log('Progress', progress)
-    //   console.log('lastFrameTime', lastFrameTime)
-    //   console.log('firstEventTime', firstEventTime)
-    //   console.log('pixelTimespan', currentTime)
-    //   console.log('canvasHeight * progress', canvasHeight * progress)
-    //   console.log('topBuffer', topBuffer)
-    // }
-
     if (currentTime - lastFrameTime > 15 && canvasHeight * progress > topBuffer) {
       lastFrameTime = currentTime
 
-      console.log('pre-nextRenderedEvent')
       const { nextEvent, remainingEvents: shiftedEvents } = getNextRenderEvent({
         canvasHeight,
         canvasTop: el.value?.offsetTop ?? 0,
