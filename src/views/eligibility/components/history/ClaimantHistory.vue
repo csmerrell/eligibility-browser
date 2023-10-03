@@ -11,11 +11,22 @@ import PanelHeader from '../PanelHeader.vue'
 
 const store = useEligibilityStore()
 const hudStore = useFlexHudStore()
+
+const unsetClaimant = () => {
+  if (store.timelineAnimating) return
+  store.setSelectedClaimant(null)
+}
 </script>
 
 <template>
-  <div v-if="store.selectedClaimant" class="claimant-history">
+  <div v-if="store.selectedClaimant && !hudStore.mainPaneToggling" class="claimant-history">
     <PanelHeader>
+      <span
+        v-if="!hudStore.leftPaneState.expanded && !hudStore.mainPaneToggling"
+        class="back-to-claimants"
+        @click="unsetClaimant"
+        >➜</span
+      >
       History
       <span v-if="!hudStore.leftPaneState.expanded" class="claimant-name">
         - {{ store.selectedClaimant.full_name }}
@@ -38,6 +49,20 @@ const hudStore = useFlexHudStore()
 
   .timeline {
     flex-grow: 1;
+  }
+
+  .back-to-claimants {
+    position: absolute;
+    left: 0.5rem;
+    transform: scaleX(-1) translateY(-25%);
+    font-size: 1.5rem;
+    display: inline-block;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--clr-mid-gray);
+    }
   }
 }
 </style>

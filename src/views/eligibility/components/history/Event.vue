@@ -16,10 +16,12 @@ const lineEl = ref<HTMLDivElement | null>(null)
 onMounted(() => {
   setTimeout(() => {
     if (!el.value || !lineEl.value) return
-    el.value.style.setProperty('top', `${position.y}px`)
-    el.value.style.setProperty('left', `${position.x}px`)
+    el.value.style.setProperty('--top', `${position.y}px`)
+    el.value.style.setProperty('--left', `${position.x}px`)
     el.value.style.setProperty('opacity', '1')
-    lineEl.value.style.setProperty('width', length)
+    if (!isClaim.value) {
+      lineEl.value.style.setProperty('--width', length)
+    }
     emit('visibleStylesSet')
   }, 100)
 })
@@ -35,8 +37,8 @@ const emit = defineEmits(['visibleStylesSet'])
   <div ref="el" class="event" :class="{ claim: isClaim }">
     <div class="event-contents">
       <div ref="lineEl" class="line"></div>
-      <div class="description" v-if="!isClaim">{{ desc }}</div>
-      <div class="date" v-if="!isClaim">{{ formatDate(date) }}</div>
+      <div v-if="!isClaim" class="description">{{ desc }}</div>
+      <div v-if="!isClaim" class="date">{{ formatDate(date) }}</div>
     </div>
   </div>
 </template>
@@ -49,9 +51,18 @@ const emit = defineEmits(['visibleStylesSet'])
   right: 0;
   transition: opacity 0.3s ease-in;
 
+  --top: 0;
+  --left: 0;
+  --width: 0;
+
+  top: var(--top);
+  left: var(--left);
+
   .line {
+    width: var(--width);
     border-top: 1px solid var(--clr-mid-gray);
   }
+
   .event-contents {
     display: flex;
     flex-flow: row;
@@ -74,6 +85,7 @@ const emit = defineEmits(['visibleStylesSet'])
 
   &.claim {
     .line {
+      width: 100%;
       border-color: var(--clr-pale-gray);
     }
   }

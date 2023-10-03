@@ -261,13 +261,14 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
     }
 
     const drawEligibilityWindow = () => {
-      eligibilityWindows.forEach((window) => {
+      eligibilityWindows.forEach((eligWindow) => {
         // Determine the effective end point for this window, using either the window's end point
         // or the current main timeline's progress, whichever is smaller.
-        const effectiveEnd = window.end !== undefined ? Math.min(window.end, progress) : progress
+        const effectiveEnd =
+          eligWindow.end !== undefined ? Math.min(eligWindow.end, progress) : progress
 
-        const startLineLength = lineHeight * window.start - 7
-        const endLineLength = lineHeight * effectiveEnd - (window.end ? 8 : 0)
+        const startLineLength = lineHeight * eligWindow.start - 7
+        const endLineLength = lineHeight * effectiveEnd - (eligWindow.end ? 8 : 0)
 
         // Setup for the rectangle
         ctx.strokeStyle = '#4d2277'

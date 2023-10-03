@@ -72,7 +72,6 @@ describe('Timeline: Async safe tests', () => {
               }
             } else {
               try {
-                console.log('drawingDone')
                 //Line completely drawn. Endpoint matches canvas height.
                 expect(maxY).toBe(dimensions.height)
                 resolve(true)
