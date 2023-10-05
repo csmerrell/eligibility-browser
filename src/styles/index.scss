@@ -4,6 +4,7 @@
 
 body {
   background-color: var(--clr-bg);
+  overflow-y: auto !important;
   
   * {
     box-sizing: border-box;

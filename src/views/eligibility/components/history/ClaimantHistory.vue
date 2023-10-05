@@ -55,7 +55,7 @@ const unsetClaimant = () => {
     position: absolute;
     left: 0.5rem;
     transform: scaleX(-1) translateY(-25%);
-    font-size: 1.5rem;
+    font-size: 1.5em;
     display: inline-block;
 
     cursor: pointer;
@@ -63,6 +63,12 @@ const unsetClaimant = () => {
     &:hover {
       color: var(--clr-mid-gray);
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .claimant-history {
+    font-size: 0.8em;
   }
 }
 </style>

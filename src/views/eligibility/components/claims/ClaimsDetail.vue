@@ -106,4 +106,10 @@ const openTimeline = () => {
     }
   }
 }
+
+@media screen and (max-width: 600px) {
+  .claims-detail {
+    font-size: 0.85em;
+  }
+}
 </style>

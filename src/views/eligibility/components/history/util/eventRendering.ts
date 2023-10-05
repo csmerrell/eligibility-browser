@@ -23,16 +23,19 @@ export interface GetRenderEventResult {
 }
 
 export const lineLengths = {
-  eligibilityRect: 8,
-  eligibility: 150,
-  other: 25
+  rectTopOffset: () => (window.innerWidth < 600 ? 8 : 7),
+  rectBottomOffset: () => (window.innerWidth < 600 ? 10 : 8),
+  eligibilityRect: () => (window.innerWidth < 600 ? 6 : 8),
+  eligibility: () => (window.innerWidth < 600 ? 95 : 150),
+  other: () => (window.innerWidth < 600 ? 10 : 25)
 }
 
 function getLength(event: TimelineEvent) {
   if (isEligibilityEvent(event)) {
-    return event.desc.match(/Eligibility Started|Eligibility Terminated/)
-      ? `${lineLengths.eligibility}px`
-      : `${lineLengths.other}px`
+    const length = event.desc.match(/Eligibility Started|Eligibility Terminated/)
+      ? lineLengths.eligibility()
+      : lineLengths.other()
+    return `${length}px`
   }
   return '100%'
 }
@@ -72,7 +75,8 @@ export function getMeasurements(claimant: ClaimantProps, canvasHeight: number) {
 }
 
 export function getNextRenderEvent(props: GetRenderEventProps): GetRenderEventResult {
-  const { canvasHeight, canvasTop, firstEventTime, lineCenter, lineProgress, pixelTimespan } = props
+  const { canvasHeight, canvasTop, firstEventTime, lineCenter, lineProgress, pixelTimespan, rem } =
+    props
   const events = [...props.remainingEvents]
 
   const currTime = firstEventTime + pixelTimespan * canvasHeight * lineProgress
@@ -91,7 +95,7 @@ export function getNextRenderEvent(props: GetRenderEventProps): GetRenderEventRe
     }
 
     if (isClaimEvent(event)) {
-      renderedEvent.position.x += lineLengths.eligibility - lineLengths.eligibilityRect
+      renderedEvent.position.x += lineLengths.eligibility() - lineLengths.eligibilityRect()
       ;(renderedEvent as RenderedClaim).claim = event.claim
     }
 
