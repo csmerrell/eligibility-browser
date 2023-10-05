@@ -71,7 +71,7 @@ const emit = defineEmits(['visibleStylesSet'])
   }
 
   .description {
-    margin-left: 0.5rem;
+    margin-left: 0;
     font-size: 0.9em;
   }
 

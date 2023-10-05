@@ -30,7 +30,7 @@ const el = ref<HTMLDivElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const showCanvas = ref(true)
 const resizeDebounceCt = ref(0)
-const rem = 16
+let rem = 16
 
 const resizeDelay = 500
 let animationFrameId: number | null = null
@@ -64,7 +64,7 @@ onMounted(() => {
       const now = new Date().getTime()
       if (now - resizeDebounceCt.value < resizeDelay) return
       // Attach resize handler
-      if (window.outerHeight === lastWindowHeight) return //only re-render on height changes
+      if (window.innerHeight === lastWindowHeight && window.innerWidth > 600) return //only re-render on height changes
 
       showCanvas.value = true
       nextTick(() => {
@@ -87,7 +87,13 @@ onBeforeUnmount(() => {
 })
 
 function resizeCanvas() {
-  lastWindowHeight = window.outerHeight
+  lastWindowHeight = window.innerHeight
+
+  if (window.innerWidth < 600) {
+    rem = 12
+  } else {
+    rem = 16
+  }
 
   if (el.value && canvasRef.value) {
     const rect = el.value.getBoundingClientRect()
@@ -134,7 +140,8 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
   //constants
   const startTime = Date.now()
   const duration = durationOverride ?? 800 // 800ms
-  const mainLineCenter = Math.min(Math.max(ctx.canvas.width / 8, 150), 170)
+  const mainLineCenter =
+    window.innerWidth < 600 ? 90 : Math.min(Math.max(ctx.canvas.width / 8, 120), 170)
 
   //used for eligbility drawing
   type EligibilityWindow = { start: number; end?: number }
@@ -144,7 +151,7 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
   let lastFrameTime = startTime
 
   //Add a first event at the start of the line
-  addBirthEvent({ x: mainLineCenter, y: el.value!.offsetTop + 7 })
+  addBirthEvent({ x: mainLineCenter + 5, y: el.value!.offsetTop + 7 })
 
   //Renders events if the drawing has passed their date.
   const conditionallyRenderEvent = (
@@ -267,8 +274,10 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
         const effectiveEnd =
           eligWindow.end !== undefined ? Math.min(eligWindow.end, progress) : progress
 
-        const startLineLength = lineHeight * eligWindow.start - 7
-        const endLineLength = lineHeight * effectiveEnd - (eligWindow.end ? 8 : 0)
+        console.log(lineHeight)
+        const startLineLength = lineHeight * eligWindow.start - lineLengths.rectTopOffset()
+        const endLineLength =
+          lineHeight * effectiveEnd - (eligWindow.end ? lineLengths.rectBottomOffset() : 0)
 
         // Setup for the rectangle
         ctx.strokeStyle = '#4d2277'
@@ -278,9 +287,9 @@ function drawCanvas(ctx: CanvasRenderingContext2D | null) {
 
         // Draw the rectangle
         ctx.rect(
-          mainLineCenter + lineLengths.eligibility - lineLengths.eligibilityRect,
+          mainLineCenter + lineLengths.eligibility() - lineLengths.eligibilityRect(),
           startLineLength,
-          lineLengths.eligibilityRect,
+          lineLengths.eligibilityRect(),
           endLineLength - startLineLength
         )
         ctx.stroke()
